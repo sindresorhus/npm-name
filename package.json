@@ -1,0 +1,42 @@
+{
+  "name": "npm-name",
+  "version": "0.0.0",
+  "description": "Check whether a package name is available on npm",
+  "license": "MIT",
+  "repository": "sindresorhus/npm-name",
+  "bin": {
+    "npm-name": "cli.js"
+  },
+  "author": {
+    "name": "Sindre Sorhus",
+    "email": "sindresorhus@gmail.com",
+    "url": "http://sindresorhus.com"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "files": [
+    "index.js",
+    "cli.js"
+  ],
+  "keywords": [
+    "cli",
+    "bin",
+    "app",
+    "npm",
+    "package",
+    "pkg",
+    "name",
+    "check",
+    "available"
+  ],
+  "dependencies": {
+    "got": "^0.2.0"
+  },
+  "devDependencies": {
+    "mocha": "*"
+  }
+}
