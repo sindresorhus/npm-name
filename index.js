@@ -1,17 +1,21 @@
 'use strict';
 var got = require('got');
-var endpoint = 'https://registry.npmjs.org/';
+var registryUrl = require('registry-url');
 
 module.exports = function (name, cb) {
-	got(endpoint + encodeURIComponent(name), {method: 'HEAD'}, function (err, data) {
-		if (err === 404) {
-			return cb(null, true);
-		}
+	registryUrl(function (err, url) {
+		got(url + encodeURIComponent(name), {method: 'HEAD'}, function (err) {
+			if (err === 404) {
+				cb(null, true);
+				return;
+			}
 
-		if (err) {
-			return cb(err);
-		}
+			if (err) {
+				cb(err);
+				return;
+			}
 
-		cb(null, false);
+			cb(null, false);
+		});
 	});
 };
