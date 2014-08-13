@@ -2,7 +2,7 @@
 'use strict';
 var logSymbols = require('log-symbols');
 var pkg = require('./package.json');
-var npmName = require('./index');
+var npmName = require('./');
 var argv = process.argv.slice(2);
 var input = argv[0];
 
@@ -18,7 +18,7 @@ function help() {
 	].join('\n'));
 }
 
-if (argv.indexOf('--help') !== -1) {
+if (!input || argv.indexOf('--help') !== -1) {
 	help();
 	return;
 }
