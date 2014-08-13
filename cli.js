@@ -1,24 +1,29 @@
 #!/usr/bin/env node
 'use strict';
+var logSymbols = require('log-symbols');
 var pkg = require('./package.json');
 var npmName = require('./index');
-var input = process.argv[2];
+var argv = process.argv.slice(2);
+var input = argv[0];
 
 function help() {
-	console.log(pkg.description);
-	console.log('');
-	console.log('Usage');
-	console.log('  $ npm-name <name>');
-	console.log('');
-	console.log('Exits with code 0 when the name is available or 2 when taken');
+	console.log([
+		'',
+		'  ' + pkg.description,
+		'',
+		'  Usage',
+		'    npm-name <name>',
+		'',
+		'  Exits with code 0 when the name is available or 2 when taken'
+	].join('\n'));
 }
 
-if (!input || process.argv.indexOf('-h') !== -1 || process.argv.indexOf('--help') !== -1) {
+if (argv.indexOf('--help') !== -1) {
 	help();
 	return;
 }
 
-if (process.argv.indexOf('-v') !== -1 || process.argv.indexOf('--version') !== -1) {
+if (argv.indexOf('--version') !== -1) {
 	console.log(pkg.version);
 	return;
 }
@@ -30,6 +35,6 @@ npmName(input, function (err, available) {
 		return;
 	}
 
-	console.log(available ? 'Available' : 'Taken');
+	console.log(available ? logSymbols.success + ' Available' : logSymbols.error + ' Unavailable');
 	process.exit(available ? 0 : 2);
 });

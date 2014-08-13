@@ -4,13 +4,13 @@
   "description": "Check whether a package name is available on npm",
   "license": "MIT",
   "repository": "sindresorhus/npm-name",
-  "bin": {
-    "npm-name": "cli.js"
-  },
   "author": {
     "name": "Sindre Sorhus",
     "email": "sindresorhus@gmail.com",
     "url": "http://sindresorhus.com"
+  },
+  "bin": {
+    "npm-name": "cli.js"
   },
   "engines": {
     "node": ">=0.10.0"
@@ -34,8 +34,9 @@
     "available"
   ],
   "dependencies": {
-    "got": "^0.3.0",
-    "registry-url": "^0.1.0"
+    "got": "^1.0.1",
+    "log-symbols": "^1.0.0",
+    "registry-url": "^1.0.0"
   },
   "devDependencies": {
     "mocha": "*"
