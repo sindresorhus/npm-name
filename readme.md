@@ -5,7 +5,7 @@
 
 ## Install
 
-```sh
+```
 $ npm install --save npm-name
 ```
 
@@ -24,7 +24,7 @@ npmName('request', function (err, available) {
 
 ## CLI
 
-```sh
+```
 $ npm install --global npm-name
 ```
 

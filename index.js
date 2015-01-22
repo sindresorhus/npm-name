@@ -3,8 +3,8 @@ var got = require('got');
 var registryUrl = require('registry-url');
 
 module.exports = function (name, cb) {
-	got(registryUrl + encodeURIComponent(name), {method: 'HEAD'}, function (err) {
-		if (err === 404) {
+	got.head(registryUrl + encodeURIComponent(name), function (err) {
+		if (err && err.code === 404) {
 			cb(null, true);
 			return;
 		}
