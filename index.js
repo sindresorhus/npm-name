@@ -1,6 +1,6 @@
 'use strict';
 var got = require('got');
-var registryUrl = require('registry-url');
+var registryUrl = require('registry-url')();
 
 module.exports = function (name, cb) {
 	got.head(registryUrl + encodeURIComponent(name), function (err) {
