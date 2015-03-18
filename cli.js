@@ -1,38 +1,27 @@
 #!/usr/bin/env node
 'use strict';
 var logSymbols = require('log-symbols');
-var pkg = require('./package.json');
+var meow = require('meow');
 var npmName = require('./');
-var argv = process.argv.slice(2);
-var input = argv[0];
 
-function help() {
-	console.log([
+var cli = meow({
+	help: [
+		'Usage',
+		'  npm-name <name>',
 		'',
-		'  ' + pkg.description,
-		'',
-		'  Usage',
-		'    npm-name <name>',
-		'',
-		'  Exits with code 0 when the name is available or 2 when taken'
-	].join('\n'));
+		'Exits with code 0 when the name is available or 2 when taken'
+	].join('\n')
+});
+
+if (!cli.input[0]) {
+	console.error('`name` required');
+	process.exit(1);
 }
 
-if (!input || argv.indexOf('--help') !== -1) {
-	help();
-	return;
-}
-
-if (argv.indexOf('--version') !== -1) {
-	console.log(pkg.version);
-	return;
-}
-
-npmName(input, function (err, available) {
+npmName(cli.input[0], function (err, available) {
 	if (err) {
 		console.error(err);
 		process.exit(1);
-		return;
 	}
 
 	console.log(available ? logSymbols.success + ' Available' : logSymbols.error + ' Unavailable');
