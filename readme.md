@@ -32,7 +32,7 @@ $ npm install --global npm-name
 $ npm-name --help
 
   Usage
-    npm-name <name>
+    $ npm-name <name>
 
   Exits with code 0 when the name is available or 2 when taken
 ```

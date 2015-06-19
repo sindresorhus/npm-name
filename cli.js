@@ -7,10 +7,10 @@ var npmName = require('./');
 var cli = meow({
 	help: [
 		'Usage',
-		'  npm-name <name>',
+		'  $ npm-name <name>',
 		'',
 		'Exits with code 0 when the name is available or 2 when taken'
-	].join('\n')
+	]
 });
 
 if (!cli.input[0]) {

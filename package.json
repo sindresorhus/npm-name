@@ -35,7 +35,7 @@
   "dependencies": {
     "got": "^2.3.1",
     "log-symbols": "^1.0.0",
-    "meow": "^3.1.0",
+    "meow": "^3.3.0",
     "registry-url": "^3.0.0"
   },
   "devDependencies": {
