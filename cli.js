@@ -19,14 +19,14 @@ var cli = meow({
 	]
 });
 
-if (!cli.input[0]) {
+if (cli.input.length === 0) {
 	console.error('Package name required');
 	process.exit(1);
 }
 
 npmName(cli.input[0], function (err, available) {
 	if (err) {
-		console.error(err);
+		console.error(err.message);
 		process.exit(1);
 	}
 
