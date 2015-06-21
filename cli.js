@@ -9,6 +9,12 @@ var cli = meow({
 		'Usage',
 		'  $ npm-name <name>',
 		'',
+		'Examples',
+		'  $ npm-name chalk',
+		'  ' + logSymbols.error + ' Unavailable',
+		'  $ npm-name unicorn-cake',
+		'  ' + logSymbols.success + ' Available',
+		'',
 		'Exits with code 0 when the name is available or 2 when taken'
 	]
 });
