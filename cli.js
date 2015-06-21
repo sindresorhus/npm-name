@@ -20,7 +20,7 @@ var cli = meow({
 });
 
 if (!cli.input[0]) {
-	console.error('`name` required');
+	console.error('Package name required');
 	process.exit(1);
 }
 
