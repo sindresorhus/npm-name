@@ -24,12 +24,7 @@ if (cli.input.length === 0) {
 	process.exit(1);
 }
 
-npmName(cli.input[0], function (err, available) {
-	if (err) {
-		console.error(err.message);
-		process.exit(1);
-	}
-
+npmName(cli.input[0]).then(function (available) {
 	console.log(available ? logSymbols.success + ' Available' : logSymbols.error + ' Unavailable');
 	process.exit(available ? 0 : 2);
 });

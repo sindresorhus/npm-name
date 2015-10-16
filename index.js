@@ -1,23 +1,20 @@
 'use strict';
 var got = require('got');
 var registryUrl = require('registry-url')();
+var Promise = require('pinkie-promise');
 
-module.exports = function (name, cb) {
+module.exports = function (name) {
 	if (!(typeof name === 'string' && name.length !== 0)) {
-		throw new Error('Package name required');
+		return Promise.reject(new Error('Package name required'));
 	}
 
-	got.head(registryUrl + name.toLowerCase(), function (err) {
-		if (err && err.statusCode === 404) {
-			cb(null, true);
-			return;
+	return got.head(registryUrl + name.toLowerCase()).then(function () {
+		return false;
+	}).catch(function (err) {
+		if (err.statusCode === 404) {
+			return true;
 		}
 
-		if (err) {
-			cb(err);
-			return;
-		}
-
-		cb(null, false);
+		throw err;
 	});
 };
