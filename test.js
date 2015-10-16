@@ -1,17 +1,10 @@
-'use strict';
-var assert = require('assert');
-var npmName = require('./');
+import test from 'ava';
+import fn from './';
 
-it('should return true when package name is available', function (cb) {
-	npmName('asdasfgrgafadsgaf').then(function (available) {
-		assert(available);
-		cb();
-	});
+test('should return true when package name is available', async t => {
+	t.true(await fn('asdasfgrgafadsgaf'));
 });
 
-it('should return false when package name is taken', function (cb) {
-	npmName('chalk').then(function (available) {
-		assert(!available);
-		cb();
-	});
+test('should return false when package name is taken', async t => {
+	t.false(await fn('chalk'));
 });
