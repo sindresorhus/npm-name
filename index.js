@@ -8,7 +8,7 @@ module.exports = function (name, cb) {
 	}
 
 	got.head(registryUrl + name.toLowerCase(), function (err) {
-		if (err && err.code === 404) {
+		if (err && err.statusCode === 404) {
 			cb(null, true);
 			return;
 		}
