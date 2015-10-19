@@ -14,7 +14,7 @@
     "node": ">=0.10.0"
   },
   "scripts": {
-    "test": "mocha --timeout 20000"
+    "test": "xo && ava"
   },
   "files": [
     "index.js",
@@ -36,9 +36,16 @@
     "got": "^5.0.0",
     "log-symbols": "^1.0.0",
     "meow": "^3.3.0",
+    "pinkie-promise": "^1.0.0",
     "registry-url": "^3.0.0"
   },
   "devDependencies": {
-    "mocha": "*"
+    "ava": "*",
+    "xo": "*"
+  },
+  "xo": {
+    "ignores": [
+      "test.js"
+    ]
   }
 }

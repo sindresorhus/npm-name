@@ -13,9 +13,9 @@ $ npm install --save npm-name
 ## Usage
 
 ```js
-var npmName = require('npm-name');
+const npmName = require('npm-name');
 
-npmName('chalk', function (err, available) {
+npmName('chalk').then(available => {
 	console.log(available);
 	//=> false
 });
