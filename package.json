@@ -30,7 +30,7 @@
   ],
   "dependencies": {
     "got": "^5.0.0",
-    "pinkie-promise": "^1.0.0",
+    "pinkie-promise": "^2.0.0",
     "registry-url": "^3.0.0"
   },
   "devDependencies": {
