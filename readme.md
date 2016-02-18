@@ -21,6 +21,8 @@ npmName('chalk').then(available => {
 });
 ```
 
+## Proxy support
+The module will look for a .npmrc file on the user's home folder or for the NPMRC environment variable for the https-proxy entry.
 
 ## Related
 
