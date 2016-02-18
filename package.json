@@ -10,7 +10,7 @@
     "url": "sindresorhus.com"
   },
   "engines": {
-    "node": ">=0.10.0"
+    "node": ">=0.12.0"
   },
   "scripts": {
     "test": "xo && ava"
@@ -30,7 +30,8 @@
   ],
   "dependencies": {
     "got": "^5.0.0",
-    "pinkie-promise": "^2.0.0",
+    "properties": "^1.2.1",
+    "proxy-agent": "^2.0.0",
     "registry-url": "^3.0.0"
   },
   "devDependencies": {
