@@ -35,6 +35,7 @@
   },
   "devDependencies": {
     "ava": "*",
+    "randomstring": "^1.1.4",
     "xo": "*"
   }
 }
