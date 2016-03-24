@@ -4,6 +4,10 @@ var registryUrl = require('registry-url')();
 var Promise = require('pinkie-promise');
 
 module.exports = function (name) {
+	if (typeof name === 'number') {
+		name = name.toString();
+	}
+
 	if (!(typeof name === 'string' && name.length !== 0)) {
 		return Promise.reject(new Error('Package name required'));
 	}
