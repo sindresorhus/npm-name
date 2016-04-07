@@ -36,5 +36,8 @@
   "devDependencies": {
     "ava": "*",
     "xo": "*"
+  },
+  "xo": {
+    "space": true
   }
 }
