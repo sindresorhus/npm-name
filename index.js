@@ -18,7 +18,10 @@ module.exports.many = function (names) {
 
 	return Promise.all(names.map(makeRequest)).then(function (values) {
 		var map = new Map();
-		values.forEach((value, key) => map.set(names[key], value));
+
+		values.forEach(function (value, key) {
+			map.set(names[key], value);
+		});
 
 		return map;
 	});
