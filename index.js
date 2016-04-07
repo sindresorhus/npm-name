@@ -16,13 +16,7 @@ module.exports.many = function (names) {
 		return Promise.reject(new Error('You must pass an array'));
 	}
 
-	var promises = [];
-
-	for (var name of names) {
-		promises.push(makeRequest(name));
-	}
-
-	return Promise.all(promises);
+	return Promise.all(names.map(makeRequest));
 };
 
 function makeRequest(name) {
