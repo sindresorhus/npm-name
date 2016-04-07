@@ -19,15 +19,26 @@ npmName('chalk').then(available => {
 	console.log(available);
 	//=> false
 });
-```
 
-You can also pass an array of names using `npmName.many`.
-```js
 npmName.many(['chalk', 'abc123']).then(available => {
 	console.log(available);
 	//=> [false, true]
 });
 ```
+
+## API
+
+### npmName(name)
+#### name
+Type: `string`
+
+A single name to check.
+
+### npmName.many(names)
+#### names
+Type: `array`
+
+Multiple names to check.
 
 ## Related
 
