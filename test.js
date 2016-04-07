@@ -13,18 +13,10 @@ test('returns false when package name is taken', async t => {
 	t.false(await fn('chalk'));
 });
 
-test('returns true when package names are available', async t => {
-	const res = await fn.many([randomName(), randomName()]);
-	t.false(res.indexOf(false) > -1);
-});
-
-test('returns false when package names are taken', async t => {
-	const res = await fn.many(['chalk', 'npm-name']);
-	t.false(res.indexOf(true) > -1);
-});
-
-test('returns true and false', async t => {
-	const res = await fn.many(['chalk', randomName()]);
-	t.true(res.indexOf(true) > -1);
-	t.true(res.indexOf(false) > -1);
+test('returns a map of multiple package names', async t => {
+	var name1 = 'chalk';
+	var name2 = randomName();
+	const res = await fn.many([name1, name2]);
+	t.false(res.get(name1));
+	t.true(res.get(name2));
 });

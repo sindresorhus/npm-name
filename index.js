@@ -13,10 +13,15 @@ module.exports = function (name) {
 
 module.exports.many = function (names) {
 	if (!Array.isArray(names)) {
-		return Promise.reject(new Error('You must pass an array'));
+		return Promise.reject(new TypeError('Expected an array, got ' + typeof names));
 	}
 
-	return Promise.all(names.map(makeRequest));
+	return Promise.all(names.map(makeRequest)).then(function (values) {
+		var map = new Map();
+		values.forEach((value, key) => map.set(names[key], value));
+
+		return map;
+	});
 };
 
 function makeRequest(name) {
