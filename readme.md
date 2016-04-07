@@ -21,6 +21,13 @@ npmName('chalk').then(available => {
 });
 ```
 
+You can also pass an array of names.
+```js
+npmName(['chalk', 'abc123']).then(available => {
+	console.log(available);
+	//=> [false, true]
+});
+```
 
 ## Related
 
