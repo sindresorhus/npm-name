@@ -10,7 +10,7 @@
     "url": "sindresorhus.com"
   },
   "engines": {
-    "node": ">=0.10.0"
+    "node": ">=4"
   },
   "scripts": {
     "test": "xo && ava"
@@ -19,18 +19,19 @@
     "index.js"
   ],
   "keywords": [
-    "app",
-    "npm",
+    "name",
+    "available",
     "package",
+    "npm",
     "pkg",
     "name",
+    "app",
     "check",
-    "available",
     "taken"
   ],
   "dependencies": {
-    "got": "^5.0.0",
-    "pinkie-promise": "^2.0.0",
+    "got": "^6.3.0",
+    "lodash.zip": "^4.0.0",
     "registry-url": "^3.0.0"
   },
   "devDependencies": {

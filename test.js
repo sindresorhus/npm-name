@@ -1,22 +1,22 @@
 import test from 'ava';
-import fn from './';
+import m from '.';
 
 function randomName() {
-	return 'asdasfgrgafadsgaf' + Math.random().toString().slice(2);
+	return `asdasfgrgafadsgaf${Math.random().toString().slice(2)}`;
 }
 
 test('returns true when package name is available', async t => {
-	t.true(await fn(randomName()));
+	t.true(await m(randomName()));
 });
 
 test('returns false when package name is taken', async t => {
-	t.false(await fn('chalk'));
+	t.false(await m('chalk'));
 });
 
 test('returns a map of multiple package names', async t => {
-	var name1 = 'chalk';
-	var name2 = randomName();
-	const res = await fn.many([name1, name2]);
+	const name1 = 'chalk';
+	const name2 = randomName();
+	const res = await m.many([name1, name2]);
 	t.false(res.get(name1));
 	t.true(res.get(name2));
 });

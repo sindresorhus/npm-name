@@ -31,16 +31,25 @@ npmName.many(['chalk', 'abc123']).then(result => {
 ## API
 
 ### npmName(name)
-#### name
-Type: `string`
 
-A single name to check. Returns a promise with `true` or `false`.
+Returns a promise for a boolean.
+
+#### name
+
+Type: `String`
+
+Name to check.
 
 ### npmName.many(names)
-#### names
-Type: `array`
 
-Multiple names to check. Returns a promise with a `Map` of the names/status.
+Returns a promise for a `Map` of name/status.
+
+#### names
+
+Type: `Array`
+
+Multiple names to check.
+
 
 ## Related
 
@@ -49,4 +58,4 @@ Multiple names to check. Returns a promise with a `Map` of the names/status.
 
 ## License
 
-MIT © [Sindre Sorhus](http://sindresorhus.com)
+MIT © [Sindre Sorhus](https://sindresorhus.com)

@@ -1,40 +1,33 @@
 'use strict';
-var got = require('got');
-var registryUrl = require('registry-url')();
-var Promise = require('pinkie-promise');
+const got = require('got');
+const registryUrl = require('registry-url')();
+const zip = require('lodash.zip');
 
-module.exports = function (name) {
+function request(name) {
+	return got.head(registryUrl + name.toLowerCase())
+		.then(() => false)
+		.catch(err => {
+			if (err.statusCode === 404) {
+				return true;
+			}
+
+			throw err;
+		});
+}
+
+module.exports = name => {
 	if (!(typeof name === 'string' && name.length !== 0)) {
 		return Promise.reject(new Error('Package name required'));
 	}
 
-	return makeRequest(name);
+	return request(name);
 };
 
-module.exports.many = function (names) {
+module.exports.many = names => {
 	if (!Array.isArray(names)) {
-		return Promise.reject(new TypeError('Expected an array, got ' + typeof names));
+		return Promise.reject(new TypeError(`Expected an array, got ${typeof names}`));
 	}
 
-	return Promise.all(names.map(makeRequest)).then(function (values) {
-		var map = new Map();
-
-		values.forEach(function (value, key) {
-			map.set(names[key], value);
-		});
-
-		return map;
-	});
+	return Promise.all(names.map(request))
+		.then(result => new Map(zip(names, result)));
 };
-
-function makeRequest(name) {
-	return got.head(registryUrl + name.toLowerCase()).then(function () {
-		return false;
-	}).catch(function (err) {
-		if (err.statusCode === 404) {
-			return true;
-		}
-
-		throw err;
-	});
-}
