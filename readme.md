@@ -19,8 +19,28 @@ npmName('chalk').then(available => {
 	console.log(available);
 	//=> false
 });
+
+npmName.many(['chalk', 'abc123']).then(result => {
+	console.log(result.get('chalk'));
+	//=> false
+	console.log(result.get('abc123'));
+	//=> true
+});
 ```
 
+## API
+
+### npmName(name)
+#### name
+Type: `string`
+
+A single name to check. Returns a promise with `true` or `false`.
+
+### npmName.many(names)
+#### names
+Type: `array`
+
+Multiple names to check. Returns a promise with a `Map` of the names/status.
 
 ## Related
 
