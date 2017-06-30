@@ -6,7 +6,7 @@
 ## Install
 
 ```
-$ npm install --save npm-name
+$ npm install npm-name
 ```
 
 

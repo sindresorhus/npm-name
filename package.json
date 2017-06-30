@@ -24,18 +24,18 @@
     "package",
     "npm",
     "pkg",
-    "name",
     "app",
     "check",
     "taken"
   ],
   "dependencies": {
-    "got": "^6.3.0",
+    "got": "^7.0.0",
     "lodash.zip": "^4.0.0",
     "registry-url": "^3.0.0"
   },
   "devDependencies": {
     "ava": "*",
+    "unique-string": "^1.0.0",
     "xo": "*"
   }
 }

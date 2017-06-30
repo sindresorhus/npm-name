@@ -4,7 +4,7 @@ const registryUrl = require('registry-url')();
 const zip = require('lodash.zip');
 
 function request(name) {
-	return got.head(registryUrl + name.toLowerCase())
+	return got.head(registryUrl + name.toLowerCase(), {timeout: 10000})
 		.then(() => false)
 		.catch(err => {
 			if (err.statusCode === 404) {
