@@ -20,7 +20,7 @@ npmName('chalk').then(available => {
 	//=> false
 });
 
-npmName.many(['chalk', '@sindresorhus/is', 'abc123']).then(result => {
+npmName.many(['chalk', '@sindresorhus/is', 'abc-123-def']).then(result => {
 	console.log(result.get('chalk'));
 	//=> false
 	console.log(result.get('@sindresorhus/is'));
