@@ -19,7 +19,7 @@ test('returns a map of multiple package names', async t => {
 });
 
 test('returns true when scoped package name is not taken', async t => {
-	t.true(await m(`${uniqueString()}/${uniqueString()}`));
+	t.true(await m(`@${uniqueString()}/${uniqueString()}`));
 });
 
 test('returns false when scoped package name is taken', async t => {
