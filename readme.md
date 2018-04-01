@@ -25,7 +25,7 @@ npmName.many(['chalk', '@sindresorhus/is', 'abc123']).then(result => {
 	//=> false
 	console.log(result.get('@sindresorhus/is'));
 	//=> false
-	console.log(result.get('abc123'));
+	console.log(result.get('abc-123-def'));
 	//=> true
 });
 ```
