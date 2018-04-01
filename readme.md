@@ -1,4 +1,4 @@
-# npm-name [![Build Status](https://travis-ci.org/sindresorhus/npm-name.svg?branch=master)](https://travis-ci.org/sindresorhus/npm-name)
+e# npm-name [![Build Status](https://travis-ci.org/sindresorhus/npm-name.svg?branch=master)](https://travis-ci.org/sindresorhus/npm-name)
 
 > Check whether a package name is available on npm
 
@@ -20,12 +20,12 @@ npmName('chalk').then(available => {
 	//=> false
 });
 
-npmName.many(['chalk', '@sindresorhus/is', 'abc123']).then(result => {
+npmName.many(['chalk', '@sindresorhus/is', 'abc-123']).then(result => {
 	console.log(result.get('chalk'));
 	//=> false
 	console.log(result.get('@sindresorhus/is'));
 	//=> false
-	console.log(result.get('abc123'));
+	console.log(result.get('abc-123'));
 	//=> true
 });
 ```
