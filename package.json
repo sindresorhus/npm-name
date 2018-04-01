@@ -30,6 +30,7 @@
   ],
   "dependencies": {
     "got": "^7.0.0",
+    "is-scoped": "^1.0.0",
     "lodash.zip": "^4.0.0",
     "registry-url": "^3.0.0"
   },

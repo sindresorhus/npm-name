@@ -1,10 +1,16 @@
 'use strict';
 const got = require('got');
+const isScoped = require('is-scoped');
 const registryUrl = require('registry-url')();
 const zip = require('lodash.zip');
 
 function request(name) {
-	return got.head(registryUrl + name.toLowerCase(), {timeout: 10000})
+	if (isScoped(name)) {
+		name = name.replace(/\//g, '%2f');
+	}
+	return got.head(registryUrl + name.toLowerCase(), {
+		timeout: 10000
+	})
 		.then(() => false)
 		.catch(err => {
 			if (err.statusCode === 404) {
