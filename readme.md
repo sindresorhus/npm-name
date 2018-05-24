@@ -31,7 +31,9 @@ npmName.many(['chalk', '@sindresorhus/is', 'abc123']).then(result => {
 
 npmName('_ABC').catch(error => {
 	console.log(error.message);
-	//=> Invalid package name: _ABC
+	// Invalid package name: _ABC
+	// - name cannot start with an underscore
+	// - name can no longer contain capital letters
 });
 ```
 
