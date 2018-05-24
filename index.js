@@ -5,10 +5,12 @@ const registryUrl = require('registry-url')();
 const zip = require('lodash.zip');
 const validate = require('validate-npm-package-name');
 
+class InvalidNameError extends Error {}
+
 function request(name) {
 	const isValid = validate(name);
 	if (!isValid.validForNewPackages) {
-		const err = new Error(`Invalid package name: ${name}`);
+		const err = new InvalidNameError(`Invalid package name: ${name}`);
 		err.warnings = isValid.warnings;
 		err.errors = isValid.errors;
 		return Promise.reject(err);
@@ -45,3 +47,5 @@ module.exports.many = names => {
 	return Promise.all(names.map(request))
 		.then(result => new Map(zip(names, result)));
 };
+
+module.exports.InvalidNameError = InvalidNameError;

@@ -27,7 +27,7 @@ test('returns false when scoped package name is taken', async t => {
 });
 
 test('throws when package name is invalid', async t => {
-	const e = await t.throws(m('_ABC'));
+	const e = await t.throws(m('_ABC'), m.InvalidNameError);
 	t.is(e.message, 'Invalid package name: _ABC');
 	t.is(e.warnings[0], 'name can no longer contain capital letters');
 	t.is(e.errors[0], 'name cannot start with an underscore');
