@@ -3,8 +3,17 @@ const got = require('got');
 const isScoped = require('is-scoped');
 const registryUrl = require('registry-url')();
 const zip = require('lodash.zip');
+const validate = require('validate-npm-package-name');
 
 function request(name) {
+	const isValid = validate(name);
+	if (!isValid.validForNewPackages) {
+		const err = new Error(`Invalid package name: ${name}`);
+		err.warnings = isValid.warnings;
+		err.errors = isValid.errors;
+		return Promise.reject(err);
+	}
+
 	if (isScoped(name)) {
 		name = name.replace(/\//g, '%2f');
 	}
