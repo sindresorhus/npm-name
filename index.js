@@ -10,7 +10,9 @@ class InvalidNameError extends Error {}
 function request(name) {
 	const isValid = validate(name);
 	if (!isValid.validForNewPackages) {
-		const err = new InvalidNameError(`Invalid package name: ${name}`);
+		const notices = [...isValid.warnings || [], ...isValid.errors || []].map(v => `- ${v}`);
+		notices.unshift(`Invalid package name: ${name}`);
+		const err = new InvalidNameError(notices.join('\n'));
 		err.warnings = isValid.warnings;
 		err.errors = isValid.errors;
 		return Promise.reject(err);
