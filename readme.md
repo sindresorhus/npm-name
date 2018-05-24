@@ -28,6 +28,11 @@ npmName.many(['chalk', '@sindresorhus/is', 'abc123']).then(result => {
 	console.log(result.get('abc123'));
 	//=> true
 });
+
+npmName('_ABC').catch(error => {
+	console.log(error.message);
+	//=> Invalid package name: _ABC
+});
 ```
 
 ## API
