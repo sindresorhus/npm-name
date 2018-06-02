@@ -3,8 +3,21 @@ const got = require('got');
 const isScoped = require('is-scoped');
 const registryUrl = require('registry-url')();
 const zip = require('lodash.zip');
+const validate = require('validate-npm-package-name');
+
+class InvalidNameError extends Error {}
 
 function request(name) {
+	const isValid = validate(name);
+	if (!isValid.validForNewPackages) {
+		const notices = [...isValid.warnings || [], ...isValid.errors || []].map(v => `- ${v}`);
+		notices.unshift(`Invalid package name: ${name}`);
+		const err = new InvalidNameError(notices.join('\n'));
+		err.warnings = isValid.warnings;
+		err.errors = isValid.errors;
+		return Promise.reject(err);
+	}
+
 	if (isScoped(name)) {
 		name = name.replace(/\//g, '%2f');
 	}
@@ -36,3 +49,5 @@ module.exports.many = names => {
 	return Promise.all(names.map(request))
 		.then(result => new Map(zip(names, result)));
 };
+
+module.exports.InvalidNameError = InvalidNameError;
