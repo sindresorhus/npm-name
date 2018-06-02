@@ -15,27 +15,29 @@ $ npm install npm-name
 ```js
 const npmName = require('npm-name');
 
-npmName('chalk').then(available => {
-	console.log(available);
-	//=> false
-});
+(async () => {
+	console.log(await npmName('chalk'));
+	// false
 
-npmName.many(['chalk', '@sindresorhus/is', 'abc123']).then(result => {
+	const result = await npmName.many(['chalk', '@sindresorhus/is', 'abc123'])
 	console.log(result.get('chalk'));
 	//=> false
 	console.log(result.get('@sindresorhus/is'));
 	//=> false
 	console.log(result.get('abc123'));
 	//=> true
-});
 
-npmName('_ABC').catch(error => {
-	console.log(error.message);
-	// Invalid package name: _ABC
-	// - name cannot start with an underscore
-	// - name can no longer contain capital letters
-});
+	try {
+		await npmName('_ABC');
+	} catch (error) {
+		console.log(error.message);
+		// Invalid package name: _ABC
+		// - name cannot start with an underscore
+		// - name can no longer contain capital letters
+	}
+})();
 ```
+
 
 ## API
 
