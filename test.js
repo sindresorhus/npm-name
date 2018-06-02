@@ -33,4 +33,3 @@ test('throws when package name is invalid', async t => {
 	t.is(lines[1], '- name can no longer contain capital letters');
 	t.is(lines[2], '- name cannot start with an underscore');
 });
-
