@@ -30,7 +30,7 @@ function request(name) {
 				return true;
 			}
 
-			if (err.statusCode === 401 && isScopedRepo) {
+			if (isScopedRepo && err.statusCode === 401) {
 				return true;
 			}
 
