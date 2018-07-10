@@ -18,7 +18,8 @@ function request(name) {
 		return Promise.reject(err);
 	}
 
-	if (isScoped(name)) {
+	const isScopedRepo = isScoped(name);
+	if (isScoped) {
 		name = name.replace(/\//g, '%2f');
 	}
 
@@ -26,6 +27,10 @@ function request(name) {
 		.then(() => false)
 		.catch(err => {
 			if (err.statusCode === 404) {
+				return true;
+			}
+
+			if (err.statusCode === 401 && isScopedRepo) {
 				return true;
 			}
 
