@@ -19,7 +19,7 @@ function request(name) {
 	}
 
 	const isScopedRepo = isScoped(name);
-	if (isScoped) {
+	if (isScopedRepo) {
 		name = name.replace(/\//g, '%2f');
 	}
 
