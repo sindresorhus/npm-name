@@ -22,7 +22,7 @@ function request(name) {
 		name = name.replace(/\//g, '%2f');
 	}
 
-	return got.head(registryUrl + name.toLowerCase(), {timeout: 10000})
+	return got.head(registryUrl + name.toLowerCase().replace(/[-_.]/g, ''), {timeout: 10000})
 		.then(() => false)
 		.catch(err => {
 			if (err.statusCode === 404) {
