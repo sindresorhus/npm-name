@@ -10,7 +10,7 @@
 		"url": "sindresorhus.com"
 	},
 	"engines": {
-		"node": ">=6"
+		"node": ">=8"
 	},
 	"scripts": {
 		"test": "xo && ava"
@@ -29,7 +29,7 @@
 		"taken"
 	],
 	"dependencies": {
-		"got": "^8.3.0",
+		"got": "^9.0.0",
 		"is-scoped": "^1.0.0",
 		"lodash.zip": "^4.0.0",
 		"registry-url": "^4.0.0",
