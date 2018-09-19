@@ -8,6 +8,7 @@ test('returns true when package name is available', async t => {
 
 test('returns false when package name is taken', async t => {
 	t.false(await m('chalk'));
+	t.false(await m('recursive-readdir'));
 });
 
 test('returns a map of multiple package names', async t => {
