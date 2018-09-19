@@ -24,7 +24,7 @@ const request = async name => {
 	}
 
 	try {
-		await got.head(registryUrl + name.toLowerCase().replace(/[-_.]/g, ''), {timeout: 10000});
+		await got.head(registryUrl + name.toLowerCase(), {timeout: 10000});
 		return false;
 	} catch (error) {
 		if (error.statusCode === 404) {

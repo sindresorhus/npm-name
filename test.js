@@ -10,11 +10,6 @@ test('returns false when package name is taken', async t => {
 	t.false(await m('chalk'));
 });
 
-// https://blog.npmjs.org/post/168978377570/new-package-moniker-rules
-test('returns false when package name is moniker-similar', async t => {
-	t.false(await m('c_h-a.l-k'));
-});
-
 test('returns a map of multiple package names', async t => {
 	const name1 = 'chalk';
 	const name2 = uniqueString();
