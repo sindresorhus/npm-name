@@ -8,11 +8,7 @@ test('returns true when package name is available', async t => {
 
 test('returns false when package name is taken', async t => {
 	t.false(await m('chalk'));
-});
-
-// https://blog.npmjs.org/post/168978377570/new-package-moniker-rules
-test('returns false when package name is moniker-similar', async t => {
-	t.false(await m('c_h-a.l-k'));
+	t.false(await m('recursive-readdir'));
 });
 
 test('returns a map of multiple package names', async t => {
@@ -28,7 +24,7 @@ test('returns true when scoped package name is not taken', async t => {
 });
 
 test('returns false when scoped package name is taken', async t => {
-	t.false(await m(`@sindresorhus/is`));
+	t.false(await m('@sindresorhus/is'));
 });
 
 test('throws when package name is invalid', async t => {
