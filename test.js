@@ -23,7 +23,7 @@ test('returns true when scoped package name is not taken', async t => {
 });
 
 test('returns false when scoped package name is taken', async t => {
-	t.false(await m(`@sindresorhus/is`));
+	t.false(await m('@sindresorhus/is'));
 });
 
 test('throws when package name is invalid', async t => {

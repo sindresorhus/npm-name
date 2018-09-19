@@ -39,7 +39,7 @@ const request = async name => {
 	}
 };
 
-module.exports = async name => {
+module.exports = name => {
 	if (!(typeof name === 'string' && name.length > 0)) {
 		throw new Error('Package name required');
 	}
