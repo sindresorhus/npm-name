@@ -1,6 +1,6 @@
 {
 	"name": "npm-name",
-	"version": "5.0.0",
+	"version": "5.0.1",
 	"description": "Check whether a package name is available on npm",
 	"license": "MIT",
 	"repository": "sindresorhus/npm-name",
