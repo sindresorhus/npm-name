@@ -7,6 +7,8 @@ const validate = require('validate-npm-package-name');
 
 class InvalidNameError extends Error {}
 
+const toPlainCase = s => s.toLowerCase().replace(/[.-]*/g, '');
+
 const throwIfInvalid = name => {
 	const isValid = validate(name);
 	if (!isValid.validForNewPackages) {
@@ -62,7 +64,7 @@ module.exports = (name, opts = {}) => {
 	throwIfInvalid(name);
 
 	const allPackages = getAllPackageNames({update: opts.updateRegistry, halt: opts.updateRegistryIgnoreErrors});
-	return !allPackages.includes(name);
+	return !allPackages.includes(toPlainCase(name));
 };
 
 module.exports.many = async (names, opts = {}) => {
