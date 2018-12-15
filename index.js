@@ -1,13 +1,13 @@
 'use strict';
-const got = require('got');
-const isScoped = require('is-scoped');
-const registryUrl = require('registry-url')();
+const os = require('os');
+const fs = require('fs');
+const {spawnSync} = require('child_process');
 const zip = require('lodash.zip');
 const validate = require('validate-npm-package-name');
 
 class InvalidNameError extends Error {}
 
-const request = async name => {
+const throwIfInvalid = name => {
 	const isValid = validate(name);
 	if (!isValid.validForNewPackages) {
 		const notices = [...isValid.warnings || [], ...isValid.errors || []].map(v => `- ${v}`);
@@ -17,42 +17,60 @@ const request = async name => {
 		error.errors = isValid.errors;
 		throw error;
 	}
+};
 
-	const isScopedPackage = isScoped(name);
-	if (isScopedPackage) {
-		name = name.replace(/\//g, '%2f');
+const npmUpdate = ({dependency, stdio}) => {
+	const opts = {
+		shell: true,
+		cwd: __dirname,
+		stdio
+	};
+	const cmd = ['npm', 'update', dependency].filter(Boolean);
+	if (os.platform() !== 'win32') {
+		try {
+			fs.accessSync(__dirname, fs.constants.W_OK);
+		} catch (error) {
+			cmd.unshift('sudo');
+		}
 	}
-
-	try {
-		await got.head(registryUrl + name.toLowerCase(), {timeout: 10000});
-		return false;
-	} catch (error) {
-		if (error.statusCode === 404) {
-			return true;
-		}
-
-		if (isScopedPackage && error.statusCode === 401) {
-			return true;
-		}
-
-		throw error;
+	const {status} = spawnSync(cmd.shift(), cmd, opts);
+	if (status !== 0) {
+		throw new Error('failed: npm update');
 	}
 };
 
-module.exports = name => {
+const getAllPackageNames = ({update = true, halt = false, stdio = 'inherit', map = toPlainCase} = {}) => {
+	if (update && !getAllPackageNames.updated) {
+		try {
+			npmUpdate({dependency: 'all-the-package-names', stdio});
+		} catch (error) {
+			if (halt) {
+				throw error;
+			}
+		}
+		getAllPackageNames.updated = true;
+	}
+	delete require.cache[require.resolve('all-the-package-names')];
+	return require('all-the-package-names').map(map);
+};
+
+module.exports = (name, opts = {}) => {
 	if (!(typeof name === 'string' && name.length > 0)) {
 		throw new Error('Package name required');
 	}
 
-	return request(name);
+	throwIfInvalid(name);
+
+	const allPackages = getAllPackageNames({update: opts.updateRegistry, halt: opts.updateRegistryIgnoreErrors});
+	return !allPackages.includes(name);
 };
 
-module.exports.many = async names => {
+module.exports.many = async (names, opts = {}) => {
 	if (!Array.isArray(names)) {
 		throw new TypeError(`Expected an array, got ${typeof names}`);
 	}
 
-	const result = await Promise.all(names.map(request));
+	const result = await Promise.all(names.map(name => module.exports(name, opts)));
 	return new Map(zip(names, result));
 };
 

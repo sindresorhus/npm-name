@@ -29,10 +29,9 @@
 		"taken"
 	],
 	"dependencies": {
-		"got": "^9.0.0",
+		"all-the-package-names": "^1.3583.0",
 		"is-scoped": "^1.0.0",
 		"lodash.zip": "^4.0.0",
-		"registry-url": "^4.0.0",
 		"validate-npm-package-name": "^3.0.0"
 	},
 	"devDependencies": {
