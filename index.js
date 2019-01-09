@@ -2,6 +2,7 @@
 const got = require('got');
 const isScoped = require('is-scoped');
 const registryUrl = require('registry-url')();
+const registryAuthToken = require('registry-auth-token');
 const zip = require('lodash.zip');
 const validate = require('validate-npm-package-name');
 
@@ -23,8 +24,14 @@ const request = async name => {
 		name = name.replace(/\//g, '%2f');
 	}
 
+	const authInfo = registryAuthToken(registryUrl, {recursive: true});
+	const headers = {};
+	if (authInfo) {
+		headers.authorization = `${authInfo.type} ${authInfo.token}`;
+	}
+
 	try {
-		await got.head(registryUrl + name.toLowerCase(), {timeout: 10000});
+		await got.head(registryUrl + name.toLowerCase(), {timeout: 10000, headers});
 		return false;
 	} catch (error) {
 		if (error.statusCode === 404) {

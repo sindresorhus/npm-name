@@ -32,6 +32,7 @@
 		"got": "^9.0.0",
 		"is-scoped": "^1.0.0",
 		"lodash.zip": "^4.0.0",
+		"registry-auth-token": "^3.3.2",
 		"registry-url": "^4.0.0",
 		"validate-npm-package-name": "^3.0.0"
 	},
