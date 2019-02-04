@@ -17,9 +17,9 @@ const npmName = require('npm-name');
 
 (async () => {
 	console.log(await npmName('chalk'));
-	// false
+	//=> false
 
-	const result = await npmName.many(['chalk', '@sindresorhus/is', 'abc123'])
+	const result = await npmName.many(['chalk', '@sindresorhus/is', 'abc123']);
 	console.log(result.get('chalk'));
 	//=> false
 	console.log(result.get('@sindresorhus/is'));
@@ -47,7 +47,7 @@ Returns a promise for a boolean.
 
 #### name
 
-Type: `String`
+Type: `string`
 
 Name to check.
 
@@ -57,7 +57,7 @@ Returns a promise for a `Map` of name/status.
 
 #### names
 
-Type: `Array`
+Type: `string[]`
 
 Multiple names to check.
 
