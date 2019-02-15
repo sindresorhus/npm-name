@@ -5,6 +5,8 @@ const registryUrl = require('registry-url')();
 const registryAuthToken = require('registry-auth-token');
 const zip = require('lodash.zip');
 const validate = require('validate-npm-package-name');
+const pSettle = require('p-settle');
+const AggregateError = require('aggregate-error');
 
 class InvalidNameError extends Error {}
 
@@ -59,8 +61,22 @@ module.exports.many = async names => {
 		throw new TypeError(`Expected an array, got ${typeof names}`);
 	}
 
-	const result = await Promise.all(names.map(request));
-	return new Map(zip(names, result));
+	const responses = await pSettle(names.map(request));
+
+	const results = responses.map(response => {
+		if (typeof response.value === 'boolean') {
+			return response.value;
+		}
+
+		return response.reason;
+	});
+
+	if (responses.map(response => response.isRejected).includes(true)) {
+		const error = new AggregateError(zip(names, results));
+		throw error;
+	}
+
+	return new Map(zip(names, results));
 };
 
 module.exports.InvalidNameError = InvalidNameError;

@@ -29,9 +29,11 @@
 		"taken"
 	],
 	"dependencies": {
+		"aggregate-error": "^2.0.0",
 		"got": "^9.6.0",
 		"is-scoped": "^1.0.0",
 		"lodash.zip": "^4.0.0",
+		"p-settle": "^2.1.0",
 		"registry-auth-token": "^3.3.2",
 		"registry-url": "^4.0.0",
 		"validate-npm-package-name": "^3.0.0"
