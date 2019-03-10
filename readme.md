@@ -43,7 +43,7 @@ const npmName = require('npm-name');
 
 ### npmName(name)
 
-Returns a promise for a boolean.
+Returns a `Promise<boolean>` of whether the given name is available.
 
 #### name
 
@@ -53,7 +53,7 @@ Name to check.
 
 ### npmName.many(names)
 
-Returns a promise for a `Map` of name/status.
+Returns a `Promise<Map>` of name and status.
 
 #### names
 

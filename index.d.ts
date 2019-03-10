@@ -3,7 +3,7 @@ declare const npmName: {
 	 * Check whether a package name is available (not registered) on npm.
 	 *
 	 * @param name - Name to check.
-	 * @returns Whether a name is available.
+	 * @returns Whether the given name is available.
 	 */
 	(name: string): Promise<boolean>;
 
@@ -11,7 +11,7 @@ declare const npmName: {
 	 * Check whether multiple package names are available (not registered) on npm.
 	 *
 	 * @param names - Multiple names to check.
-	 * @returns A `Map` of name/status.
+	 * @returns A `Map` of name and status.
 	 */
 	many<NameType extends string>(names: NameType[]): Promise<Map<NameType, boolean>>;
 };
