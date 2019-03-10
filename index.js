@@ -46,13 +46,16 @@ const request = async name => {
 	}
 };
 
-module.exports = name => {
+const npmName = name => {
 	if (!(typeof name === 'string' && name.length > 0)) {
 		throw new Error('Package name required');
 	}
 
 	return request(name);
 };
+
+module.exports = npmName;
+module.exports.default = npmName;
 
 module.exports.many = async names => {
 	if (!Array.isArray(names)) {
