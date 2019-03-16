@@ -1,5 +1,6 @@
 'use strict';
 const {URL} = require('url');
+const ow = require('ow');
 const got = require('got');
 const isScoped = require('is-scoped');
 const configuredRegistryUrl = require('registry-url')();
@@ -50,13 +51,8 @@ const request = async (name, registryUrl) => {
 const normalizeUrl = url => (new URL(url)).href; // Meant to make sure the URL always ends with '/'.
 
 const npmName = (name, registryUrl = configuredRegistryUrl) => {
-	if (!(typeof name === 'string' && name.length > 0)) {
-		throw new Error('Package name required');
-	}
-
-	if (!(typeof registryUrl === 'string' && registryUrl.length > 0)) {
-		throw new Error('Registry URL must be a string URL');
-	}
+	ow(name, ow.string.minLength(1));
+	ow(registryUrl, ow.string.minLength(1));
 
 	return request(name, normalizeUrl(registryUrl));
 };
@@ -69,9 +65,8 @@ module.exports.many = async (names, registryUrl = configuredRegistryUrl) => {
 		throw new TypeError(`Expected an array, got ${typeof names}`);
 	}
 
-	if (!(typeof registryUrl === 'string' && registryUrl.length > 0)) {
-		throw new Error('Registry URL must be a string URL');
-	}
+	ow(names, ow.array.ofType(ow.string.minLength(1)));
+	ow(registryUrl, ow.string.minLength(1));
 
 	const result = await Promise.all(names.map(name => request(name, normalizeUrl(registryUrl))));
 	return new Map(zip(names, result));
