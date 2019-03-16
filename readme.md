@@ -59,6 +59,8 @@ Type: `string`
 
 Registry URL to check name availability against (default to the currently set npm registry URL).
 
+_**Note:** you should only provide a registry URL in case you'd like to check a package name against a registry which you haven't configured using npm. If you'd like to check the name against the currently set registry simply use `npmName(name)`, without providing a second parameter._
+
 ### npmName.many(names, registryUrl)
 
 Returns a `Promise<Map>` of name and status.
