@@ -1,14 +1,15 @@
 'use strict';
+const {URL} = require('url');
 const got = require('got');
 const isScoped = require('is-scoped');
-const registryUrl = require('registry-url')();
+const configuredRegistryUrl = require('registry-url')();
 const registryAuthToken = require('registry-auth-token');
 const zip = require('lodash.zip');
 const validate = require('validate-npm-package-name');
 
 class InvalidNameError extends Error {}
 
-const request = async name => {
+const request = async (name, registryUrl) => {
 	const isValid = validate(name);
 	if (!isValid.validForNewPackages) {
 		const notices = [...isValid.warnings || [], ...isValid.errors || []].map(v => `- ${v}`);
@@ -46,23 +47,33 @@ const request = async name => {
 	}
 };
 
-const npmName = name => {
+const normalizeUrl = url => (new URL(url)).href; // Meant to make sure the URL always ends with '/'.
+
+const npmName = (name, registryUrl = configuredRegistryUrl) => {
 	if (!(typeof name === 'string' && name.length > 0)) {
 		throw new Error('Package name required');
 	}
 
-	return request(name);
+	if (!(typeof registryUrl === 'string' && registryUrl.length > 0)) {
+		throw new Error('Registry URL must be a string URL');
+	}
+
+	return request(name, normalizeUrl(registryUrl));
 };
 
 module.exports = npmName;
 module.exports.default = npmName;
 
-module.exports.many = async names => {
+module.exports.many = async (names, registryUrl = configuredRegistryUrl) => {
 	if (!Array.isArray(names)) {
 		throw new TypeError(`Expected an array, got ${typeof names}`);
 	}
 
-	const result = await Promise.all(names.map(request));
+	if (!(typeof registryUrl === 'string' && registryUrl.length > 0)) {
+		throw new Error('Registry URL must be a string URL');
+	}
+
+	const result = await Promise.all(names.map(name => request(name, normalizeUrl(registryUrl))));
 	return new Map(zip(names, result));
 };
 

@@ -18,6 +18,8 @@ const npmName = require('npm-name');
 (async () => {
 	console.log(await npmName('chalk'));
 	//=> false
+	console.log(await npmName('apple-rainbow', 'https://registry.yarnpkg.com'));
+	//=> true
 
 	const result = await npmName.many(['chalk', '@sindresorhus/is', 'abc123']);
 	console.log(result.get('chalk'));
@@ -41,7 +43,7 @@ const npmName = require('npm-name');
 
 ## API
 
-### npmName(name)
+### npmName(name, registryUrl)
 
 Returns a `Promise<boolean>` of whether the given name is available.
 
@@ -51,7 +53,13 @@ Type: `string`
 
 Name to check.
 
-### npmName.many(names)
+### registryUrl
+
+Type: `string`
+
+Registry URL to check name availability against (default to the currently set npm registry URL).
+
+### npmName.many(names, registryUrl)
 
 Returns a `Promise<Map>` of name and status.
 
@@ -60,6 +68,12 @@ Returns a `Promise<Map>` of name and status.
 Type: `string[]`
 
 Multiple names to check.
+
+### registryUrl
+
+Type: `string`
+
+Registry URL to check name availability against (default to the currently set npm registry URL).
 
 
 ## Related

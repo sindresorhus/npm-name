@@ -2,13 +2,26 @@ import test from 'ava';
 import uniqueString from 'unique-string';
 import npmName from '.';
 
+const alternativeRegistry = 'https://registry.yarnpkg.com/';
+
 test('returns true when package name is available', async t => {
-	t.true(await npmName(uniqueString()));
+	const moduleName = uniqueString();
+
+	t.true(await npmName(moduleName));
+	t.true(await npmName(moduleName, alternativeRegistry));
 });
 
 test('returns false when package name is taken', async t => {
 	t.false(await npmName('chalk'));
 	t.false(await npmName('recursive-readdir'));
+	t.false(await npmName('np', alternativeRegistry));
+});
+
+test('registry url is normalized', async t => {
+	const moduleName = uniqueString();
+
+	t.true(await npmName(moduleName, alternativeRegistry));
+	t.true(await npmName(moduleName, alternativeRegistry.slice(0, -1))); // The `.slice` removes the last '/' from the URL.
 });
 
 test('returns a map of multiple package names', async t => {
