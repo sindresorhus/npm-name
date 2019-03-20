@@ -43,7 +43,7 @@ const npmName = require('npm-name');
 
 ## API
 
-### npmName(name, registryUrl)
+### npmName(name, [options])
 
 Returns a `Promise<boolean>` of whether the given name is available.
 
@@ -53,15 +53,17 @@ Type: `string`
 
 Name to check.
 
-### registryUrl
+#### options
 
-Type: `string`
+##### registryUrl
 
 Registry URL to check name availability against (default to the currently set npm registry URL).
 
-_**Note:** you should only provide a registry URL in case you'd like to check a package name against a registry which you haven't configured using npm. If you'd like to check the name against the currently set registry simply use `npmName(name)`, without providing a second parameter._
+_**Note:** you should only provide a registry URL in case you'd like to check a package name against a registry which you haven't configured using npm. If you'd like to check the name against the currently set registry simply use `npmName(name)`, without providing a second parameter. You're very unlikely to need this in public npm packages, as it's more targeted towards internal tools._
 
-### npmName.many(names, registryUrl)
+> If you use this when you shouldn't, @sindresorhus will hunt you at night. 🤫
+
+### npmName.many(names, [options])
 
 Returns a `Promise<Map>` of name and status.
 
@@ -71,11 +73,9 @@ Type: `string[]`
 
 Multiple names to check.
 
-### registryUrl
+#### options
 
-Type: `string`
-
-Registry URL to check name availability against (default to the currently set npm registry URL).
+Same as `npmName()`.
 
 
 ## Related

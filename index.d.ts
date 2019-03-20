@@ -3,19 +3,19 @@ declare const npmName: {
 	 * Check whether a package name is available (not registered) on npm.
 	 *
 	 * @param name - Name to check.
-	 * @param [registryUrl] - Registry URL to check name availability against (default to the currently set npm registry URL).
+	 * @param options - Object containing some options you can pass to change the method's behavior.
 	 * @returns Whether the given name is available.
 	 */
-	(name: string, registryUrl?: string): Promise<boolean>;
+	(name: string, options?: object): Promise<boolean>;
 
 	/**
 	 * Check whether multiple package names are available (not registered) on npm.
 	 *
 	 * @param names - Multiple names to check.
-	 * @param [registryUrl] - Registry URL to check name availability against (default to the currently set npm registry URL).
+	 * @param options - Object containing some options you can pass to change the method's behavior.
 	 * @returns A `Map` of name and status.
 	 */
-	many<NameType extends string>(names: NameType[], registryUrl?: string): Promise<Map<NameType, boolean>>;
+	many<NameType extends string>(names: NameType[], options?: object): Promise<Map<NameType, boolean>>;
 };
 
 export default npmName;

@@ -2,26 +2,30 @@ import test from 'ava';
 import uniqueString from 'unique-string';
 import npmName from '.';
 
-const alternativeRegistry = 'https://registry.yarnpkg.com/';
+const registryUrl = 'https://registry.yarnpkg.com/';
+const options = {registryUrl};
 
 test('returns true when package name is available', async t => {
 	const moduleName = uniqueString();
 
 	t.true(await npmName(moduleName));
-	t.true(await npmName(moduleName, alternativeRegistry));
+	t.true(await npmName(moduleName, options));
+	t.throws(() => npmName(moduleName, {registryUrl: null}));
 });
 
 test('returns false when package name is taken', async t => {
 	t.false(await npmName('chalk'));
 	t.false(await npmName('recursive-readdir'));
-	t.false(await npmName('np', alternativeRegistry));
+	t.false(await npmName('np', options));
 });
 
 test('registry url is normalized', async t => {
 	const moduleName = uniqueString();
 
-	t.true(await npmName(moduleName, alternativeRegistry));
-	t.true(await npmName(moduleName, alternativeRegistry.slice(0, -1))); // The `.slice` removes the last '/' from the URL.
+	t.true(await npmName(moduleName, options));
+	t.true(await npmName(moduleName, {
+		registryUrl: registryUrl.slice(0, -1) // The `.slice` removes the last '/' from the URL
+	}));
 });
 
 test('returns a map of multiple package names', async t => {
@@ -30,6 +34,8 @@ test('returns a map of multiple package names', async t => {
 	const res = await npmName.many([name1, name2]);
 	t.false(res.get(name1));
 	t.true(res.get(name2));
+
+	await t.throwsAsync(npmName.many([name1, name2], {registryUrl: null}));
 });
 
 test('returns true when scoped package name is not taken', async t => {
