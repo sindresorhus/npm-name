@@ -64,6 +64,7 @@ const npmName = (name, options = {}) => {
 };
 
 module.exports = npmName;
+// TODO: remove this in the next major version
 module.exports.default = npmName;
 
 module.exports.many = async (names, options = {}) => {
