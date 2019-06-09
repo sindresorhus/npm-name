@@ -10,7 +10,7 @@ test('returns true when package name is available', async t => {
 
 	t.true(await npmName(moduleName));
 	t.true(await npmName(moduleName, options));
-	t.throws(() => npmName(moduleName, {registryUrl: null}));
+	await t.throwsAsync(npmName(moduleName, {registryUrl: null}));
 });
 
 test('returns false when package name is taken', async t => {

@@ -1,11 +1,19 @@
 declare class InvalidNameErrorClass extends Error {}
 
+interface Options {
+	/**
+	Use custom registry URL.
+
+	Default: User's configured npm registry URL.
+	*/
+	readonly registryUrl: string;
+}
+
 declare const npmName: {
 	/**
 	Check whether a package name is available (not registered) on npm.
 
 	@param name - Name to check.
-  @param options - Object containing some options you can pass to change the method's behavior.
 	@returns Whether the given name is available.
 
 	@example
@@ -30,13 +38,12 @@ declare const npmName: {
 	})();
 	```
 	*/
-	(name: string): Promise<boolean>;
+	(name: string, options?: Options): Promise<boolean>;
 
 	/**
 	Check whether multiple package names are available (not registered) on npm.
 
 	@param names - Multiple names to check.
-  @param options - Object containing some options you can pass to change the method's behavior.
 	@returns A `Map` of name and status.
 
 	@example
@@ -55,7 +62,8 @@ declare const npmName: {
 	```
 	*/
 	many<NameType extends string>(
-		names: NameType[]
+		names: NameType[],
+		options?: Options
 	): Promise<Map<NameType, boolean>>;
 
 	InvalidNameError: typeof InvalidNameErrorClass;

@@ -1,6 +1,5 @@
 'use strict';
-const {URL} = require('url');
-const ow = require('ow');
+const isUrl = require('is-url-superb');
 const got = require('got');
 const isScoped = require('is-scoped');
 const configuredRegistryUrl = require('registry-url')();
@@ -11,6 +10,8 @@ const validate = require('validate-npm-package-name');
 class InvalidNameError extends Error {}
 
 const request = async (name, options) => {
+	const registryUrl = normalizeUrl(options.registryUrl || configuredRegistryUrl);
+
 	const isValid = validate(name);
 	if (!isValid.validForNewPackages) {
 		const notices = [...isValid.warnings || [], ...isValid.errors || []].map(v => `- ${v}`);
@@ -26,14 +27,14 @@ const request = async (name, options) => {
 		name = name.replace(/\//g, '%2f');
 	}
 
-	const authInfo = registryAuthToken(options.registryUrl, {recursive: true});
+	const authInfo = registryAuthToken(registryUrl, {recursive: true});
 	const headers = {};
 	if (authInfo) {
 		headers.authorization = `${authInfo.type} ${authInfo.token}`;
 	}
 
 	try {
-		await got.head(options.registryUrl + name.toLowerCase(), {timeout: 10000, headers});
+		await got.head(registryUrl + name.toLowerCase(), {timeout: 10000, headers});
 		return false;
 	} catch (error) {
 		if (error.statusCode === 404) {
@@ -50,15 +51,14 @@ const request = async (name, options) => {
 
 const normalizeUrl = url => (new URL(url)).href; // Meant to make sure the URL always ends with '/'.
 
-const npmName = (name, options = {}) => {
-	ow(name, ow.string.minLength(1));
-	ow(options, ow.object.partialShape({
-		registryUrl: ow.optional.string.minLength(1)
-	}));
+const npmName = async (name, options = {}) => {
+	if (!(typeof name === 'string' && name.length > 0)) {
+		throw new Error('Package name required');
+	}
 
-	options = {
-		registryUrl: normalizeUrl(options.registryUrl || configuredRegistryUrl)
-	};
+	if (typeof options.registryUrl !== 'undefined' && !(typeof options.registryUrl === 'string' && isUrl(options.registryUrl))) {
+		throw new Error('Registry URL must be a valid string URL');
+	}
 
 	return request(name, options);
 };
@@ -68,14 +68,13 @@ module.exports = npmName;
 module.exports.default = npmName;
 
 module.exports.many = async (names, options = {}) => {
-	ow(names, ow.array.ofType(ow.string.minLength(1)));
-	ow(options, ow.object.partialShape({
-		registryUrl: ow.optional.string.minLength(1)
-	}));
+	if (!Array.isArray(names)) {
+		throw new TypeError(`Expected an array of names, got ${typeof names}`);
+	}
 
-	options = {
-		registryUrl: normalizeUrl(options.registryUrl || configuredRegistryUrl)
-	};
+	if (typeof options.registryUrl !== 'undefined' && !(typeof options.registryUrl === 'string' && isUrl(options.registryUrl))) {
+		throw new Error('Registry URL must be a valid string URL');
+	}
 
 	const result = await Promise.all(names.map(name => request(name, options)));
 	return new Map(zip(names, result));
