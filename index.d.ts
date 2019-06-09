@@ -1,12 +1,14 @@
 declare class InvalidNameErrorClass extends Error {}
 
-interface Options {
-	/**
-	Registry URL to check name availability against.
+declare namespace npmName {
+	interface Options {
+		/**
+		Registry URL to check name availability against.
 
-	Default: User's configured npm registry URL.
-	*/
-	readonly registryUrl: string;
+		Default: User's configured npm registry URL.
+		*/
+		readonly registryUrl: string;
+	}
 }
 
 declare const npmName: {
@@ -38,7 +40,7 @@ declare const npmName: {
 	})();
 	```
 	*/
-	(name: string, options?: Options): Promise<boolean>;
+	(name: string, options?: npmName.Options): Promise<boolean>;
 
 	/**
 	Check whether multiple package names are available (not registered) on npm.
@@ -63,7 +65,7 @@ declare const npmName: {
 	*/
 	many<NameType extends string>(
 		names: NameType[],
-		options?: Options
+		options?: npmName.Options
 	): Promise<Map<NameType, boolean>>;
 
 	InvalidNameError: typeof InvalidNameErrorClass;
