@@ -2,7 +2,7 @@ declare class InvalidNameErrorClass extends Error {}
 
 interface Options {
 	/**
-	Use custom registry URL.
+	Registry URL to check name availability against.
 
 	Default: User's configured npm registry URL.
 	*/

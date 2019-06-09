@@ -49,7 +49,7 @@ const request = async (name, options) => {
 	}
 };
 
-const normalizeUrl = url => (new URL(url)).href; // Meant to make sure the URL always ends with '/'.
+const normalizeUrl = url => url.replace(/\/$/, '') + '/'; // Meant to make sure the URL always ends with '/'.
 
 const npmName = async (name, options = {}) => {
 	if (!(typeof name === 'string' && name.length > 0)) {
@@ -57,7 +57,7 @@ const npmName = async (name, options = {}) => {
 	}
 
 	if (typeof options.registryUrl !== 'undefined' && !(typeof options.registryUrl === 'string' && isUrl(options.registryUrl))) {
-		throw new Error('Registry URL must be a valid string URL');
+		throw new Error('The `registryUrl` option must be a valid string URL');
 	}
 
 	return request(name, options);
@@ -73,7 +73,7 @@ module.exports.many = async (names, options = {}) => {
 	}
 
 	if (typeof options.registryUrl !== 'undefined' && !(typeof options.registryUrl === 'string' && isUrl(options.registryUrl))) {
-		throw new Error('Registry URL must be a valid string URL');
+		throw new Error('The `registryUrl` option must be a valid string URL');
 	}
 
 	const result = await Promise.all(names.map(name => request(name, options)));
