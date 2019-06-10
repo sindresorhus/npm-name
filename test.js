@@ -24,7 +24,7 @@ test('registry url is normalized', async t => {
 
 	t.true(await npmName(moduleName, options));
 	t.true(await npmName(moduleName, {
-		registryUrl: registryUrl.slice(0, -1) // The `.slice` removes the last '/' from the URL
+		registryUrl: registryUrl.slice(0, -1) // The `.slice()` removes the trailing `/` from the URL
 	}));
 });
 
