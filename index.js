@@ -49,7 +49,8 @@ const request = async (name, options) => {
 	}
 };
 
-const normalizeUrl = url => url.replace(/\/$/, '') + '/'; // Meant to make sure the URL always ends with '/'.
+// Ensure the URL always ends in a `/`
+const normalizeUrl = url => url.replace(/\/$/, '') + '/';
 
 const npmName = async (name, options = {}) => {
 	if (!(typeof name === 'string' && name.length > 0)) {
