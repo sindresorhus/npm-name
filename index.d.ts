@@ -26,9 +26,6 @@ declare const npmName: {
 		console.log(await npmName('chalk'));
 		//=> false
 
-		console.log(await npmName('got', {registryUrl: 'https://registry.yarnpkg.com'}));
-		//=> false
-
 		try {
 			await npmName('_ABC');
 		} catch (error) {
