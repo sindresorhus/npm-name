@@ -18,9 +18,6 @@ const npmName = require('npm-name');
 (async () => {
 	console.log(await npmName('chalk'));
 	//=> false
-	
-	console.log(await npmName('apple-rainbow', 'https://registry.yarnpkg.com'));
-	//=> true
 
 	const result = await npmName.many(['chalk', '@sindresorhus/is', 'abc123']);
 	console.log(result.get('chalk'));
