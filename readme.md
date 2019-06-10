@@ -64,9 +64,7 @@ Default: User's configured npm registry URL.
 
 Registry URL to check name availability against.
 
-_**Note:** you should only provide a registry URL in case you'd like to check a package name against a registry which you haven't configured using npm. If you'd like to check the name against the currently set registry simply use `npmName(name)`, without providing a second parameter. You're very unlikely to need this in public npm packages, as it's more targeted towards internal tools._
-
-> If you use this when you shouldn't, @sindresorhus will hunt you at night. 🤫
+**Note:** You're unlikely to need this option. Most use-cases are best solved by using the default. You should only use this option if you need to check a package name against a specific registry.
 
 ### npmName.many(names, options?)
 
