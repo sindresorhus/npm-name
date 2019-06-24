@@ -9,14 +9,14 @@ const validate = require('validate-npm-package-name');
 
 class InvalidNameError extends Error {}
 
-const orgRegex = /^@[a-z\d][\w-.]+\/?$/;
+const organizationRegex = /^@[a-z\d][\w-.]+\/?$/;
+const npmOrgUrl = 'https://www.npmjs.com/org/';
 
 const request = async (name, options) => {
 	const registryUrl = normalizeUrl(options.registryUrl || configuredRegistryUrl);
-	const npmOrgUrl = 'https://www.npmjs.com/org/';
 
-	const isOrg = orgRegex.test(name);
-	if (isOrg) {
+	const isOrganization = organizationRegex.test(name);
+	if (isOrganization) {
 		name = name.replace(/[@/]/g, '');
 	}
 
@@ -42,7 +42,7 @@ const request = async (name, options) => {
 	}
 
 	try {
-		if (isOrg) {
+		if (isOrganization) {
 			await got.head(npmOrgUrl + name.toLowerCase(), {timeout: 10000});
 		} else {
 			await got.head(registryUrl + name.toLowerCase(), {timeout: 10000, headers});
