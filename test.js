@@ -13,10 +13,23 @@ test('returns true when package name is available', async t => {
 	await t.throwsAsync(npmName(moduleName, {registryUrl: null}));
 });
 
+test('returns true when org name is available', async t => {
+	const moduleName = uniqueString();
+
+	t.true(await npmName(`@${moduleName}`));
+	t.true(await npmName(`@${moduleName}/`));
+});
+
 test('returns false when package name is taken', async t => {
 	t.false(await npmName('chalk'));
 	t.false(await npmName('recursive-readdir'));
 	t.false(await npmName('np', options));
+});
+
+test('returns false when org name is taken', async t => {
+	t.false(await npmName('@ava'));
+	t.false(await npmName('@ava/'));
+	t.false(await npmName('@angular/'));
 });
 
 test('registry url is normalized', async t => {
