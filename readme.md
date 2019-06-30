@@ -27,6 +27,13 @@ const npmName = require('npm-name');
 	console.log(result.get('abc123'));
 	//=> true
 
+	// Can also check whether an organization name is available
+	// Organization names should start with @ and should not be a scoped package
+	console.log(await npmName('@ava'));
+	//=> false
+	console.log(await npmName('@abc123'));
+	//=> true
+
 	try {
 		await npmName('_ABC');
 	} catch (error) {
