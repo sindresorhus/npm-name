@@ -6,10 +6,10 @@ const configuredRegistryUrl = require('registry-url')();
 const registryAuthToken = require('registry-auth-token');
 const zip = require('lodash.zip');
 const validate = require('validate-npm-package-name');
+const organizationRegex = require('org-regex')({exact: true});
 
 class InvalidNameError extends Error {}
 
-const organizationRegex = /^@[a-z\d][\w-.]+\/?$/;
 const npmOrganizationUrl = 'https://www.npmjs.com/org/';
 
 const request = async (name, options) => {
