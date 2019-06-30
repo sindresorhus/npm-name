@@ -1,6 +1,6 @@
 # npm-name [![Build Status](https://travis-ci.org/sindresorhus/npm-name.svg?branch=master)](https://travis-ci.org/sindresorhus/npm-name)
 
-> Check whether a package name is available on npm
+> Check whether a package or organization name is available on npm
 
 
 ## Install
@@ -16,22 +16,28 @@ $ npm install npm-name
 const npmName = require('npm-name');
 
 (async () => {
+	// Check a package name
 	console.log(await npmName('chalk'));
 	//=> false
 
-	const result = await npmName.many(['chalk', '@sindresorhus/is', 'abc123']);
-	console.log(result.get('chalk'));
-	//=> false
-	console.log(result.get('@sindresorhus/is'));
-	//=> false
-	console.log(result.get('abc123'));
-	//=> true
 
-	// Can also check whether an organization name is available
-	// Organization names should start with @ and should not be a scoped package
+	// Check an organization name
 	console.log(await npmName('@ava'));
 	//=> false
+
 	console.log(await npmName('@abc123'));
+	//=> true
+
+
+	const result = await npmName.many(['chalk', '@sindresorhus/is', 'abc123']);
+
+	console.log(result.get('chalk'));
+	//=> false
+
+	console.log(result.get('@sindresorhus/is'));
+	//=> false
+
+	console.log(result.get('abc123'));
 	//=> true
 
 	try {
@@ -49,6 +55,10 @@ const npmName = require('npm-name');
 ## API
 
 ### npmName(name, options?)
+
+Check whether a package/organization name is available (not registered) on npm.
+
+An organization name should start with `@` and should not be a scoped package.
 
 Returns a `Promise<boolean>` of whether the given name is available.
 
@@ -72,6 +82,8 @@ Registry URL to check name availability against.
 
 ### npmName.many(names, options?)
 
+Check whether multiple package/organization names are available (not registered) on npm.
+
 Returns a `Promise<Map>` of name and status.
 
 #### names
@@ -90,8 +102,3 @@ Same as `npmName()`.
 ## Related
 
 - [npm-name-cli](https://github.com/sindresorhus/npm-name-cli) - CLI for this module
-
-
-## License
-
-MIT © [Sindre Sorhus](https://sindresorhus.com)
