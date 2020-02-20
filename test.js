@@ -67,3 +67,19 @@ test('throws when package name is invalid', async t => {
 - name cannot start with an underscore`
 	});
 });
+
+test('should return an interable error capturing multiple errors when appropriate', async t => {
+	const name1 = 'chalk'; // False
+	const name2 = uniqueString(); // True
+	const name3 = '_ABC'; // Error
+	const name4 = 'CapitalsAreBad'; // Error
+
+	try {
+		await npmName.many([name1, name2, name3, name4]);
+	} catch (error) {
+		const errors = [...error];
+		t.true(errors.length === 2);
+		t.regex(errors[0].message, /Invalid package name: _ABC/);
+		t.regex(errors[1].message, /Invalid package name: CapitalsAreBad/);
+	}
+});

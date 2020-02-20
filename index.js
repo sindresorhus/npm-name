@@ -6,7 +6,10 @@ const configuredRegistryUrl = require('registry-url')();
 const registryAuthToken = require('registry-auth-token');
 const zip = require('lodash.zip');
 const validate = require('validate-npm-package-name');
+
 const organizationRegex = require('org-regex')({exact: true});
+
+const pMap = require('p-map');
 
 class InvalidNameError extends Error {}
 
@@ -90,8 +93,12 @@ module.exports.many = async (names, options = {}) => {
 		throw new Error('The `registryUrl` option must be a valid string URL');
 	}
 
-	const result = await Promise.all(names.map(name => request(name, options)));
-	return new Map(zip(names, result));
+	try {
+		const result = await pMap(names, name => request(name, options), {stopOnError: false});
+		return new Map(zip(names, result));
+	} catch (error) {
+		throw error;
+	}
 };
 
 module.exports.InvalidNameError = InvalidNameError;
