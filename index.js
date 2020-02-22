@@ -91,12 +91,8 @@ module.exports.many = async (names, options = {}) => {
 		throw new Error('The `registryUrl` option must be a valid string URL');
 	}
 
-	try {
-		const result = await pMap(names, name => request(name, options), {stopOnError: false});
-		return new Map(zip(names, result));
-	} catch (error) {
-		throw error;
-	}
+	const result = await pMap(names, name => request(name, options), {stopOnError: false});
+	return new Map(zip(names, result));
 };
 
 module.exports.InvalidNameError = InvalidNameError;

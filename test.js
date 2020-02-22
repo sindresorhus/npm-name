@@ -68,7 +68,7 @@ test('throws when package name is invalid', async t => {
 	});
 });
 
-test('should return an interable error capturing multiple errors when appropriate', async t => {
+test('should return an iterable error capturing multiple errors when appropriate', async t => {
 	const name1 = 'chalk'; // False
 	const name2 = uniqueString(); // True
 	const name3 = '_ABC'; // Error
