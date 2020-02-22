@@ -1,5 +1,6 @@
 import test from 'ava';
 import uniqueString from 'unique-string';
+import AggregateError from 'aggregate-error';
 import npmName from '.';
 
 const registryUrl = 'https://registry.yarnpkg.com/';
@@ -66,4 +67,20 @@ test('throws when package name is invalid', async t => {
 - name can no longer contain capital letters
 - name cannot start with an underscore`
 	});
+});
+
+test('should return an iterable error capturing multiple errors when appropriate', async t => {
+	const name1 = 'chalk'; // False
+	const name2 = uniqueString(); // True
+	const name3 = '_ABC'; // Error
+	const name4 = 'CapitalsAreBad'; // Error
+
+	const aggregateError = await t.throwsAsync(npmName.many([name1, name2, name3, name4]), {
+		instanceOf: AggregateError
+	});
+
+	const errors = [...aggregateError];
+	t.is(errors.length, 2);
+	t.regex(errors[0].message, /Invalid package name: _ABC/);
+	t.regex(errors[1].message, /Invalid package name: CapitalsAreBad/);
 });
