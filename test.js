@@ -78,7 +78,7 @@ test('should return an interable error capturing multiple errors when appropriat
 		await npmName.many([name1, name2, name3, name4]);
 	} catch (error) {
 		const errors = [...error];
-		t.true(errors.length === 2);
+		t.is(errors.length, 2);
 		t.regex(errors[0].message, /Invalid package name: _ABC/);
 		t.regex(errors[1].message, /Invalid package name: CapitalsAreBad/);
 	}
