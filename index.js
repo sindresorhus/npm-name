@@ -51,11 +51,13 @@ const request = async (name, options) => {
 
 		return false;
 	} catch (error) {
-		if (error.statusCode === 404) {
+		const {statusCode} = error.response;
+
+		if (statusCode === 404) {
 			return true;
 		}
 
-		if (isScopedPackage && error.statusCode === 401) {
+		if (isScopedPackage && statusCode === 401) {
 			return true;
 		}
 
@@ -79,8 +81,6 @@ const npmName = async (name, options = {}) => {
 };
 
 module.exports = npmName;
-// TODO: remove this in the next major version
-module.exports.default = npmName;
 
 module.exports.many = async (names, options = {}) => {
 	if (!Array.isArray(names)) {

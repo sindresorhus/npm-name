@@ -83,9 +83,6 @@ declare const npmName: {
 	): Promise<Map<NameType, boolean>>;
 
 	InvalidNameError: typeof InvalidNameErrorClass;
-
-	// TODO: remove this in the next major version
-	default: typeof npmName;
 };
 
 export = npmName;

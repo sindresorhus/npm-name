@@ -2,13 +2,11 @@
 
 > Check whether a package or organization name is available on npm
 
-
 ## Install
 
 ```
 $ npm install npm-name
 ```
-
 
 ## Usage
 
@@ -50,7 +48,6 @@ const npmName = require('npm-name');
 	}
 })();
 ```
-
 
 ## API
 
@@ -97,7 +94,6 @@ Multiple names to check.
 Type: `object`
 
 Same as `npmName()`.
-
 
 ## Related
 
