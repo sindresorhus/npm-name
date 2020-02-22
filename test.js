@@ -1,5 +1,6 @@
 import test from 'ava';
 import uniqueString from 'unique-string';
+import AggregateError from 'aggregate-error';
 import npmName from '.';
 
 const registryUrl = 'https://registry.yarnpkg.com/';
@@ -74,12 +75,14 @@ test('should return an iterable error capturing multiple errors when appropriate
 	const name3 = '_ABC'; // Error
 	const name4 = 'CapitalsAreBad'; // Error
 
-	try {
-		await npmName.many([name1, name2, name3, name4]);
-	} catch (error) {
-		const errors = [...error];
-		t.is(errors.length, 2);
-		t.regex(errors[0].message, /Invalid package name: _ABC/);
-		t.regex(errors[1].message, /Invalid package name: CapitalsAreBad/);
+	const errors = await t.throwsAsync(npmName.many([name1, name2, name3, name4]), {
+		instanceOf: AggregateError
+	});
+
+	const expectedMessages = [/Invalid package name: _ABC/,
+		/Invalid package name: CapitalsAreBad/];
+
+	for (const message of expectedMessages) {
+		t.regex(errors.message, message);
 	}
 });
