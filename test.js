@@ -75,14 +75,12 @@ test('should return an iterable error capturing multiple errors when appropriate
 	const name3 = '_ABC'; // Error
 	const name4 = 'CapitalsAreBad'; // Error
 
-	const errors = await t.throwsAsync(npmName.many([name1, name2, name3, name4]), {
+	const aggregateError = await t.throwsAsync(npmName.many([name1, name2, name3, name4]), {
 		instanceOf: AggregateError
 	});
 
-	const expectedMessages = [/Invalid package name: _ABC/,
-		/Invalid package name: CapitalsAreBad/];
-
-	for (const message of expectedMessages) {
-		t.regex(errors.message, message);
-	}
+	const errors = [...aggregateError];
+	t.is(errors.length, 2);
+	t.regex(errors[0].message, /Invalid package name: _ABC/);
+	t.regex(errors[1].message, /Invalid package name: CapitalsAreBad/);
 });
