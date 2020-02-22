@@ -42,6 +42,7 @@
 		"validate-npm-package-name": "^3.0.0"
 	},
 	"devDependencies": {
+		"aggregate-error": "^3.0.1",
 		"ava": "^2.1.0",
 		"tsd": "^0.7.1",
 		"unique-string": "^2.0.0",
