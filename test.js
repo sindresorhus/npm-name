@@ -27,6 +27,11 @@ test('returns false when package name is taken', async t => {
 	t.false(await npmName('np', options));
 });
 
+test('returns false when package name is taken, regardless of punctuation', async t => {
+	t.false(await npmName('ch-alk'));
+	t.false(await npmName('recursivereaddir'));
+});
+
 test('returns false when organization name is taken', async t => {
 	t.false(await npmName('@ava'));
 	t.false(await npmName('@ava/'));
