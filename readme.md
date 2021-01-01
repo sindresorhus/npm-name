@@ -1,4 +1,4 @@
-# npm-name [![Build Status](https://travis-ci.org/sindresorhus/npm-name.svg?branch=master)](https://travis-ci.org/sindresorhus/npm-name)
+# npm-name
 
 > Check whether a package or organization name is available on npm
 
