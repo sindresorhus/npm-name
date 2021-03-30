@@ -32,7 +32,11 @@ const request = async (name, options) => {
 		throw error;
 	}
 
+	let urlName = name;
 	const isScopedPackage = isScoped(name);
+	if (isScopedPackage) {
+		urlName = name.replace(/\//g, '%2f');
+	}
 
 	const authInfo = registryAuthToken(registryUrl, {recursive: true});
 	const headers = {};
@@ -41,11 +45,6 @@ const request = async (name, options) => {
 	}
 
 	try {
-		let urlName = name;
-		if (isScopedPackage) {
-			urlName = name.replace(/\//g, '%2f');
-		}
-
 		if (isOrganization) {
 			await got.head(npmOrganizationUrl + urlName.toLowerCase(), {timeout: 10000});
 		} else {
