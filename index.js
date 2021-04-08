@@ -57,7 +57,7 @@ const request = async (name, options) => {
 
 		if (statusCode === 404) {
 			if (!isOrganization) {
-				const conflict = await isTaken(name.toLowerCase());
+				const conflict = await isTaken(name.toLowerCase(), {maxAge: 60000});
 				return !conflict;
 			}
 

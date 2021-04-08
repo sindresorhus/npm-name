@@ -33,7 +33,7 @@
 	],
 	"dependencies": {
 		"got": "^10.6.0",
-		"is-name-taken": "^1.1.1",
+		"is-name-taken": "^2.0.0",
 		"is-scoped": "^2.1.0",
 		"is-url-superb": "^4.0.0",
 		"lodash.zip": "^4.2.0",
