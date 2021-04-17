@@ -8,6 +8,7 @@ const zip = require('lodash.zip');
 const validate = require('validate-npm-package-name');
 const organizationRegex = require('org-regex')({exact: true});
 const pMap = require('p-map');
+const {isTaken} = require('is-name-taken');
 
 class InvalidNameError extends Error {}
 
@@ -31,9 +32,10 @@ const request = async (name, options) => {
 		throw error;
 	}
 
+	let urlName = name;
 	const isScopedPackage = isScoped(name);
 	if (isScopedPackage) {
-		name = name.replace(/\//g, '%2f');
+		urlName = name.replace(/\//g, '%2f');
 	}
 
 	const authInfo = registryAuthToken(registryUrl, {recursive: true});
@@ -44,9 +46,9 @@ const request = async (name, options) => {
 
 	try {
 		if (isOrganization) {
-			await got.head(npmOrganizationUrl + name.toLowerCase(), {timeout: 10000});
+			await got.head(npmOrganizationUrl + urlName.toLowerCase(), {timeout: 10000});
 		} else {
-			await got.head(registryUrl + name.toLowerCase(), {timeout: 10000, headers});
+			await got.head(registryUrl + urlName.toLowerCase(), {timeout: 10000, headers});
 		}
 
 		return false;
@@ -54,6 +56,11 @@ const request = async (name, options) => {
 		const {statusCode} = error.response;
 
 		if (statusCode === 404) {
+			if (!isOrganization) {
+				const conflict = await isTaken(name.toLowerCase(), {maxAge: 60000});
+				return !conflict;
+			}
+
 			return true;
 		}
 
