@@ -1,7 +1,7 @@
 import test from 'ava';
 import uniqueString from 'unique-string';
 import AggregateError from 'aggregate-error';
-import npmName from '.';
+import npmName, {npmNameMany, InvalidNameError} from './index.js';
 
 const registryUrl = 'https://registry.yarnpkg.com/';
 const options = {registryUrl};
@@ -50,11 +50,11 @@ test('registry url is normalized', async t => {
 test('returns a map of multiple package names', async t => {
 	const name1 = 'chalk';
 	const name2 = uniqueString();
-	const res = await npmName.many([name1, name2]);
-	t.false(res.get(name1));
-	t.true(res.get(name2));
+	const result = await npmNameMany([name1, name2]);
+	t.false(result.get(name1));
+	t.true(result.get(name2));
 
-	await t.throwsAsync(npmName.many([name1, name2], {registryUrl: null}));
+	await t.throwsAsync(npmNameMany([name1, name2], {registryUrl: null}));
 });
 
 test('returns true when scoped package name is not taken', async t => {
@@ -67,7 +67,7 @@ test('returns false when scoped package name is taken', async t => {
 
 test('throws when package name is invalid', async t => {
 	await t.throwsAsync(npmName('_ABC'), {
-		instanceOf: npmName.InvalidNameError,
+		instanceOf: InvalidNameError,
 		message: `Invalid package name: _ABC
 - name can no longer contain capital letters
 - name cannot start with an underscore`
@@ -80,11 +80,11 @@ test('should return an iterable error capturing multiple errors when appropriate
 	const name3 = '_ABC'; // Error
 	const name4 = 'CapitalsAreBad'; // Error
 
-	const aggregateError = await t.throwsAsync(npmName.many([name1, name2, name3, name4]), {
+	const aggregateError = await t.throwsAsync(npmNameMany([name1, name2, name3, name4]), {
 		instanceOf: AggregateError
 	});
 
-	const errors = [...aggregateError];
+	const errors = [...aggregateError.errors];
 	t.is(errors.length, 2);
 	t.regex(errors[0].message, /Invalid package name: _ABC/);
 	t.regex(errors[1].message, /Invalid package name: CapitalsAreBad/);

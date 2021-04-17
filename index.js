@@ -1,16 +1,19 @@
-'use strict';
-const isUrl = require('is-url-superb');
-const got = require('got');
-const isScoped = require('is-scoped');
-const configuredRegistryUrl = require('registry-url')();
-const registryAuthToken = require('registry-auth-token');
-const zip = require('lodash.zip');
-const validate = require('validate-npm-package-name');
-const organizationRegex = require('org-regex')({exact: true});
-const pMap = require('p-map');
-const {isTaken} = require('is-name-taken');
+import isUrl from 'is-url-superb';
+import got from 'got';
+import isScoped from 'is-scoped';
+import registryUrl from 'registry-url';
+import registryAuthToken from 'registry-auth-token';
+import zip from 'lodash.zip';
+import validate from 'validate-npm-package-name';
+import orgRegex from 'org-regex';
+import pMap from 'p-map';
+import {isTaken} from 'is-name-taken';
 
-class InvalidNameError extends Error {}
+const configuredRegistryUrl = registryUrl();
+const organizationRegex = orgRegex({exact: true});
+
+// Ensure the URL always ends in a `/`
+const normalizeUrl = url => url.replace(/\/$/, '') + '/';
 
 const npmOrganizationUrl = 'https://www.npmjs.com/org/';
 
@@ -45,6 +48,7 @@ const request = async (name, options) => {
 	}
 
 	try {
+		// eslint-disable-next-line unicorn/prefer-ternary
 		if (isOrganization) {
 			await got.head(npmOrganizationUrl + urlName.toLowerCase(), {timeout: 10000});
 		} else {
@@ -72,10 +76,7 @@ const request = async (name, options) => {
 	}
 };
 
-// Ensure the URL always ends in a `/`
-const normalizeUrl = url => url.replace(/\/$/, '') + '/';
-
-const npmName = async (name, options = {}) => {
+export default async function npmName(name, options = {}) {
 	if (!(typeof name === 'string' && name.length > 0)) {
 		throw new Error('Package name required');
 	}
@@ -85,11 +86,9 @@ const npmName = async (name, options = {}) => {
 	}
 
 	return request(name, options);
-};
+}
 
-module.exports = npmName;
-
-module.exports.many = async (names, options = {}) => {
+export async function npmNameMany(names, options = {}) {
 	if (!Array.isArray(names)) {
 		throw new TypeError(`Expected an array of names, got ${typeof names}`);
 	}
@@ -100,6 +99,6 @@ module.exports.many = async (names, options = {}) => {
 
 	const result = await pMap(names, name => request(name, options), {stopOnError: false});
 	return new Map(zip(names, result));
-};
+}
 
-module.exports.InvalidNameError = InvalidNameError;
+export class InvalidNameError extends Error {}

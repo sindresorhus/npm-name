@@ -11,42 +11,27 @@ $ npm install npm-name
 ## Usage
 
 ```js
-const npmName = require('npm-name');
+import npmName from 'npm-name';
 
-(async () => {
-	// Check a package name
-	console.log(await npmName('chalk'));
-	//=> false
+// Check a package name
+console.log(await npmName('chalk'));
+//=> false
 
+// Check an organization name
+console.log(await npmName('@ava'));
+//=> false
 
-	// Check an organization name
-	console.log(await npmName('@ava'));
-	//=> false
+console.log(await npmName('@abc123'));
+//=> true
 
-	console.log(await npmName('@abc123'));
-	//=> true
-
-
-	const result = await npmName.many(['chalk', '@sindresorhus/is', 'abc123']);
-
-	console.log(result.get('chalk'));
-	//=> false
-
-	console.log(result.get('@sindresorhus/is'));
-	//=> false
-
-	console.log(result.get('abc123'));
-	//=> true
-
-	try {
-		await npmName('_ABC');
-	} catch (error) {
-		console.log(error.message);
-		// Invalid package name: _ABC
-		// - name cannot start with an underscore
-		// - name can no longer contain capital letters
-	}
-})();
+try {
+	await npmName('_ABC');
+} catch (error) {
+	console.log(error.message);
+	// Invalid package name: _ABC
+	// - name cannot start with an underscore
+	// - name can no longer contain capital letters
+}
 ```
 
 ## API
@@ -77,11 +62,26 @@ Registry URL to check name availability against.
 
 **Note:** You're unlikely to need this option. Most use-cases are best solved by using the default. You should only use this option if you need to check a package name against a specific registry.
 
-### npmName.many(names, options?)
+### npmNameMany(names, options?)
 
 Check whether multiple package/organization names are available (not registered) on npm.
 
 Returns a `Promise<Map>` of name and status.
+
+```js
+import {npmNameMany} from 'npm-name';
+
+const result = await npmNameMany(['chalk', '@sindresorhus/is', 'abc123']);
+
+console.log(result.get('chalk'));
+//=> false
+
+console.log(result.get('@sindresorhus/is'));
+//=> false
+
+console.log(result.get('abc123'));
+//=> true
+```
 
 #### names
 

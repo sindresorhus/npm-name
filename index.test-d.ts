@@ -1,16 +1,15 @@
 import {expectType} from 'tsd';
-import npmName = require('.');
-import {InvalidNameError} from '.';
+import npmName, {npmNameMany, InvalidNameError} from './index.js';
 
 expectType<Promise<boolean>>(npmName('chalk'));
 expectType<Promise<boolean>>(npmName('got', {
 	registryUrl: 'https://registry.yarnpkg.com/'
 }));
 
-const manyResult = npmName.many(['chalk', '@sindresorhus/is', 'abc123']);
+const manyResult = npmNameMany(['chalk', '@sindresorhus/is', 'abc123']);
 expectType<Promise<Map<'chalk' | '@sindresorhus/is' | 'abc123', boolean>>>(
 	manyResult
 );
 expectType<boolean | undefined>((await manyResult).get('chalk'));
 
-new InvalidNameError('foo') instanceof InvalidNameError;
+expectType<InvalidNameError>(new InvalidNameError('foo'));
