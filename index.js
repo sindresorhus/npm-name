@@ -57,7 +57,7 @@ const request = async (name, options) => {
 
 		return false;
 	} catch (error) {
-		const {statusCode} = error.response;
+		const {statusCode} = error.response || {};
 
 		if (statusCode === 404) {
 			if (!isOrganization) {
