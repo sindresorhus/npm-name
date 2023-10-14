@@ -7,7 +7,7 @@ import zip from 'lodash.zip';
 import validate from 'validate-npm-package-name';
 import orgRegex from 'org-regex';
 import pMap from 'p-map';
-import {isTaken} from 'is-name-taken';
+/// import {isTaken} from 'is-name-taken';
 
 const configuredRegistryUrl = registryUrl();
 const organizationRegex = orgRegex({exact: true});
@@ -60,10 +60,11 @@ const request = async (name, options) => {
 		const {statusCode} = error.response || {};
 
 		if (statusCode === 404) {
-			if (!isOrganization) {
-				const conflict = await isTaken(name.toLowerCase(), {maxAge: 60000});
-				return !conflict;
-			}
+			// Disabled as it's often way too slow: https://github.com/sindresorhus/npm-name-cli/issues/30
+			// if (!isOrganization) {
+			// 	const conflict = await isTaken(name.toLowerCase(), {maxAge: 60000});
+			// 	return !conflict;
+			// }
 
 			return true;
 		}
