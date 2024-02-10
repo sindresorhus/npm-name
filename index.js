@@ -1,5 +1,5 @@
 import isUrl from 'is-url-superb';
-import got from 'got';
+import ky from 'ky';
 import isScoped from 'is-scoped';
 import registryUrl from 'registry-url';
 import registryAuthToken from 'registry-auth-token';
@@ -22,7 +22,7 @@ const request = async (name, options) => {
 
 	const isOrganization = organizationRegex.test(name);
 	if (isOrganization) {
-		name = name.replace(/[@/]/g, '');
+		name = name.replaceAll(/[@/]/g, '');
 	}
 
 	const isValid = validate(name);
@@ -38,26 +38,25 @@ const request = async (name, options) => {
 	let urlName = name;
 	const isScopedPackage = isScoped(name);
 	if (isScopedPackage) {
-		urlName = name.replace(/\//g, '%2f');
+		urlName = name.replaceAll('/', '%2f');
 	}
 
 	const authInfo = registryAuthToken(registryUrl, {recursive: true});
 	const headers = {};
-	if (authInfo) {
+	if (authInfo && !isOrganization) {
 		headers.authorization = `${authInfo.type} ${authInfo.token}`;
 	}
 
 	try {
-		// eslint-disable-next-line unicorn/prefer-ternary
+		let packageUrl = registryUrl + urlName.toLowerCase();
 		if (isOrganization) {
-			await got.head(npmOrganizationUrl + urlName.toLowerCase(), {timeout: 10000});
-		} else {
-			await got.head(registryUrl + urlName.toLowerCase(), {timeout: 10000, headers});
+			packageUrl = npmOrganizationUrl + urlName.toLowerCase();
 		}
 
+		await ky.head(packageUrl, {timeout: 10_000, headers});
 		return false;
 	} catch (error) {
-		const {statusCode} = error.response || {};
+		const statusCode = (error.response || {status: 500}).status;
 
 		if (statusCode === 404) {
 			// Disabled as it's often way too slow: https://github.com/sindresorhus/npm-name-cli/issues/30
@@ -82,7 +81,7 @@ export default async function npmName(name, options = {}) {
 		throw new Error('Package name required');
 	}
 
-	if (typeof options.registryUrl !== 'undefined' && !(typeof options.registryUrl === 'string' && isUrl(options.registryUrl))) {
+	if (options.registryUrl !== undefined && !(typeof options.registryUrl === 'string' && isUrl(options.registryUrl))) {
 		throw new Error('The `registryUrl` option must be a valid string URL');
 	}
 
@@ -94,7 +93,7 @@ export async function npmNameMany(names, options = {}) {
 		throw new TypeError(`Expected an array of names, got ${typeof names}`);
 	}
 
-	if (typeof options.registryUrl !== 'undefined' && !(typeof options.registryUrl === 'string' && isUrl(options.registryUrl))) {
+	if (options.registryUrl !== undefined && !(typeof options.registryUrl === 'string' && isUrl(options.registryUrl))) {
 		throw new Error('The `registryUrl` option must be a valid string URL');
 	}
 

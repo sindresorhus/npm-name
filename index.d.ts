@@ -1,13 +1,13 @@
 export class InvalidNameError extends Error {}
 
-export interface Options {
+export type Options = {
 	/**
 	Registry URL to check name availability against.
 
 	Default: User's configured npm registry URL.
 	*/
 	readonly registryUrl: string;
-}
+};
 
 /**
 Check whether a package/organization name is available (not registered) on npm.
