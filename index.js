@@ -53,8 +53,7 @@ const request = async (name, options) => {
 			packageUrl = npmOrganizationUrl + urlName.toLowerCase();
 		}
 
-		// eslint-disable-next-line unicorn/numeric-separators-style
-		await ky.head(packageUrl, {timeout: 10000, headers});
+		await ky.head(packageUrl, {timeout: 10_000, headers});
 		return false;
 	} catch (error) {
 		const statusCode = (error.response || {status: 500}).status;
