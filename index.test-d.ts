@@ -3,13 +3,14 @@ import npmName, {npmNameMany, InvalidNameError} from './index.js';
 
 expectType<Promise<boolean>>(npmName('chalk'));
 expectType<Promise<boolean>>(npmName('got', {
-	registryUrl: 'https://registry.yarnpkg.com/'
+	registryUrl: 'https://registry.yarnpkg.com/',
 }));
 
 const manyResult = npmNameMany(['chalk', '@sindresorhus/is', 'abc123']);
 expectType<Promise<Map<'chalk' | '@sindresorhus/is' | 'abc123', boolean>>>(
-	manyResult
+	manyResult,
 );
+// eslint-disable-next-line unicorn/no-await-expression-member
 expectType<boolean | undefined>((await manyResult).get('chalk'));
 
 expectType<InvalidNameError>(new InvalidNameError('foo'));

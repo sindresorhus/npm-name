@@ -43,7 +43,7 @@ test('registry url is normalized', async t => {
 
 	t.true(await npmName(moduleName, options));
 	t.true(await npmName(moduleName, {
-		registryUrl: registryUrl.slice(0, -1) // The `.slice()` removes the trailing `/` from the URL
+		registryUrl: registryUrl.slice(0, -1), // The `.slice()` removes the trailing `/` from the URL
 	}));
 });
 
@@ -70,7 +70,7 @@ test('throws when package name is invalid', async t => {
 		instanceOf: InvalidNameError,
 		message: `Invalid package name: _ABC
 - name can no longer contain capital letters
-- name cannot start with an underscore`
+- name cannot start with an underscore`,
 	});
 });
 
@@ -81,7 +81,7 @@ test('should return an iterable error capturing multiple errors when appropriate
 	const name4 = 'CapitalsAreBad'; // Error
 
 	const aggregateError = await t.throwsAsync(npmNameMany([name1, name2, name3, name4]), {
-		instanceOf: AggregateError
+		instanceOf: AggregateError,
 	});
 
 	const errors = [...aggregateError.errors];

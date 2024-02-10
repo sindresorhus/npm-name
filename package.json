@@ -45,9 +45,9 @@
 	},
 	"devDependencies": {
 		"aggregate-error": "^4.0.0",
-		"ava": "^3.15.0",
-		"tsd": "^0.14.0",
+		"ava": "^6.1.1",
+		"tsd": "^0.30.4",
 		"unique-string": "^3.0.0",
-		"xo": "^0.38.2"
+		"xo": "^0.57.0"
 	}
 }

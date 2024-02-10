@@ -22,7 +22,7 @@ const request = async (name, options) => {
 
 	const isOrganization = organizationRegex.test(name);
 	if (isOrganization) {
-		name = name.replace(/[@/]/g, '');
+		name = name.replaceAll(/[@/]/g, '');
 	}
 
 	const isValid = validate(name);
@@ -38,7 +38,7 @@ const request = async (name, options) => {
 	let urlName = name;
 	const isScopedPackage = isScoped(name);
 	if (isScopedPackage) {
-		urlName = name.replace(/\//g, '%2f');
+		urlName = name.replaceAll('/', '%2f');
 	}
 
 	const authInfo = registryAuthToken(registryUrl, {recursive: true});
@@ -53,6 +53,7 @@ const request = async (name, options) => {
 			packageUrl = npmOrganizationUrl + urlName.toLowerCase();
 		}
 
+		// eslint-disable-next-line unicorn/numeric-separators-style
 		await ky.head(packageUrl, {timeout: 10000, headers});
 		return false;
 	} catch (error) {
@@ -81,7 +82,7 @@ export default async function npmName(name, options = {}) {
 		throw new Error('Package name required');
 	}
 
-	if (typeof options.registryUrl !== 'undefined' && !(typeof options.registryUrl === 'string' && isUrl(options.registryUrl))) {
+	if (options.registryUrl !== undefined && !(typeof options.registryUrl === 'string' && isUrl(options.registryUrl))) {
 		throw new Error('The `registryUrl` option must be a valid string URL');
 	}
 
@@ -93,7 +94,7 @@ export async function npmNameMany(names, options = {}) {
 		throw new TypeError(`Expected an array of names, got ${typeof names}`);
 	}
 
-	if (typeof options.registryUrl !== 'undefined' && !(typeof options.registryUrl === 'string' && isUrl(options.registryUrl))) {
+	if (options.registryUrl !== undefined && !(typeof options.registryUrl === 'string' && isUrl(options.registryUrl))) {
 		throw new Error('The `registryUrl` option must be a valid string URL');
 	}
 

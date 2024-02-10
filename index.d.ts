@@ -1,6 +1,6 @@
 export class InvalidNameError extends Error {}
 
-export interface Options {
+export class Options {
 	/**
 	Registry URL to check name availability against.
 
