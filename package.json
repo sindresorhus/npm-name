@@ -34,15 +34,13 @@
 		"taken"
 	],
 	"dependencies": {
-		"got": "^11.8.5",
-		"is-name-taken": "^2.0.0",
 		"is-scoped": "^3.0.0",
 		"is-url-superb": "^6.1.0",
+		"ky": "^1.2.0",
 		"lodash.zip": "^4.2.0",
 		"org-regex": "^1.0.0",
 		"p-map": "^5.5.0",
 		"registry-auth-token": "^4.2.2",
-		"registry-url": "^6.0.1",
 		"validate-npm-package-name": "^3.0.0"
 	},
 	"devDependencies": {

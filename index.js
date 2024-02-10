@@ -1,7 +1,7 @@
 import isUrl from 'is-url-superb';
-import got from 'got';
+import ky from 'ky';
 import isScoped from 'is-scoped';
-import registryUrl from 'registry-url';
+import registryUrl from 'registry-auth-token/registry-url.js';
 import registryAuthToken from 'registry-auth-token';
 import zip from 'lodash.zip';
 import validate from 'validate-npm-package-name';
@@ -43,21 +43,20 @@ const request = async (name, options) => {
 
 	const authInfo = registryAuthToken(registryUrl, {recursive: true});
 	const headers = {};
-	if (authInfo) {
+	if (authInfo && !isOrganization) {
 		headers.authorization = `${authInfo.type} ${authInfo.token}`;
 	}
 
 	try {
-		// eslint-disable-next-line unicorn/prefer-ternary
+		let packageUrl = registryUrl + urlName.toLowerCase();
 		if (isOrganization) {
-			await got.head(npmOrganizationUrl + urlName.toLowerCase(), {timeout: 10000});
-		} else {
-			await got.head(registryUrl + urlName.toLowerCase(), {timeout: 10000, headers});
+			packageUrl = npmOrganizationUrl + urlName.toLowerCase();
 		}
 
+		await ky.head(packageUrl, {timeout: 10000, headers});
 		return false;
 	} catch (error) {
-		const {statusCode} = error.response || {};
+		const statusCode = (error.response || {status: 500}).status;
 
 		if (statusCode === 404) {
 			// Disabled as it's often way too slow: https://github.com/sindresorhus/npm-name-cli/issues/30
