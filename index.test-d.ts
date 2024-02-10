@@ -10,7 +10,8 @@ const manyResult = npmNameMany(['chalk', '@sindresorhus/is', 'abc123']);
 expectType<Promise<Map<'chalk' | '@sindresorhus/is' | 'abc123', boolean>>>(
 	manyResult,
 );
-// eslint-disable-next-line unicorn/no-await-expression-member
-expectType<boolean | undefined>((await manyResult).get('chalk'));
+const results = await manyResult;
+const chalk = results.get('chalk');
+expectType<boolean | undefined>(chalk);
 
 expectType<InvalidNameError>(new InvalidNameError('foo'));
