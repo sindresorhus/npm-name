@@ -1,6 +1,5 @@
 import test from 'ava';
 import uniqueString from 'unique-string';
-import AggregateError from 'aggregate-error';
 import npmName, {npmNameMany, InvalidNameError} from './index.js';
 
 const registryUrl = 'https://registry.yarnpkg.com/';

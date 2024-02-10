@@ -2,7 +2,7 @@ export class InvalidNameError extends Error {}
 
 export type Options = {
 	/**
-	Registry URL to check name availability against.
+	The registry URL to check name availability against.
 
 	Default: User's configured npm registry URL.
 	*/
@@ -14,7 +14,7 @@ Check whether a package/organization name is available (not registered) on npm.
 
 An organization name should start with `@` and should not be a scoped package.
 
-@param name - Name to check.
+@param name - The name to check.
 @returns Whether the given name is available.
 
 @example

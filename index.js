@@ -18,7 +18,7 @@ const normalizeUrl = url => url.replace(/\/$/, '') + '/';
 const npmOrganizationUrl = 'https://www.npmjs.com/org/';
 
 const request = async (name, options) => {
-	const registryUrl = normalizeUrl(options.registryUrl || configuredRegistryUrl);
+	const registryUrl = normalizeUrl(options.registryUrl ?? configuredRegistryUrl);
 
 	const isOrganization = organizationRegex.test(name);
 	if (isOrganization) {
@@ -27,7 +27,7 @@ const request = async (name, options) => {
 
 	const isValid = validate(name);
 	if (!isValid.validForNewPackages) {
-		const notices = [...isValid.warnings || [], ...isValid.errors || []].map(v => `- ${v}`);
+		const notices = [...isValid.warnings ?? [], ...isValid.errors ?? []].map(v => `- ${v}`);
 		notices.unshift(`Invalid package name: ${name}`);
 		const error = new InvalidNameError(notices.join('\n'));
 		error.warnings = isValid.warnings;
@@ -56,7 +56,7 @@ const request = async (name, options) => {
 		await ky.head(packageUrl, {timeout: 10_000, headers});
 		return false;
 	} catch (error) {
-		const statusCode = (error.response || {status: 500}).status;
+		const statusCode = error.response?.status ?? 500;
 
 		if (statusCode === 404) {
 			// Disabled as it's often way too slow: https://github.com/sindresorhus/npm-name-cli/issues/30

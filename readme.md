@@ -4,8 +4,8 @@
 
 ## Install
 
-```
-$ npm install npm-name
+```sh
+npm install npm-name
 ```
 
 ## Usage
@@ -48,7 +48,7 @@ Returns a `Promise<boolean>` of whether the given name is available.
 
 Type: `string`
 
-Name to check.
+The name to check.
 
 #### options
 
@@ -58,7 +58,7 @@ Type: `object`
 
 Default: User's configured npm registry URL.
 
-Registry URL to check name availability against.
+THe registry URL to check name availability against.
 
 **Note:** You're unlikely to need this option. Most use-cases are best solved by using the default. You should only use this option if you need to check a package name against a specific registry.
 
