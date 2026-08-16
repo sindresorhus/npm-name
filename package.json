@@ -43,6 +43,7 @@
 		"ky": "^1.2.0",
 		"lodash.zip": "^4.2.0",
 		"org-regex": "^1.0.0",
+		"p-limit": "^6.2.0",
 		"p-map": "^7.0.1",
 		"registry-auth-token": "^5.0.2",
 		"registry-url": "^6.0.1",

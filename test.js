@@ -1,6 +1,15 @@
+import http from 'node:http';
+import {promisify} from 'node:util';
 import test from 'ava';
 import uniqueString from 'unique-string';
 import npmName, {npmNameMany, InvalidNameError} from './index.js';
+
+const createRegistry = async (t, handler) => {
+	const server = http.createServer(handler);
+	await promisify(server.listen.bind(server))(0, '127.0.0.1');
+	t.teardown(() => server.close());
+	return `http://127.0.0.1:${server.address().port}/`;
+};
 
 const registryUrl = 'https://registry.yarnpkg.com/';
 const options = {registryUrl};
@@ -30,6 +39,62 @@ test('returns false when package name is taken, regardless of punctuation', asyn
 	t.false(await npmName('ch-alk'));
 	t.false(await npmName('ch.alk'));
 	t.false(await npmName('ch_alk'));
+});
+
+test('returns false when the existing package is the punctuated one', async t => {
+	// `lodash.merge` exists, `lodash-merge` and `lodash_merge` do not.
+	t.false(await npmName('lodash-merge'));
+	t.false(await npmName('lodash_merge'));
+});
+
+test('collapses separator runs when building punctuation variants', async t => {
+	// `lodash--merge` must check the single-separator spellings, one of which
+	// (`lodash.merge`) exists.
+	t.false(await npmName('lodash--merge'));
+});
+
+test('throws when a punctuation probe fails with a server error', async t => {
+	const registryUrl = await createRegistry(t, (request, response) => {
+		response.statusCode = request.url === '/err-name' ? 404 : 500;
+		response.end();
+	});
+
+	await t.throwsAsync(npmName('err-name', {registryUrl}));
+});
+
+test('reports a conflict even when another punctuation probe fails', async t => {
+	const registryUrl = await createRegistry(t, (request, response) => {
+		if (request.url === '/errname') {
+			response.statusCode = 200;
+		} else if (request.url === '/err-name') {
+			response.statusCode = 404;
+		} else {
+			response.statusCode = 500;
+		}
+
+		response.end();
+	});
+
+	t.false(await npmName('err-name', {registryUrl}));
+});
+
+test('limits concurrent registry requests across a batch', async t => {
+	let active = 0;
+	let maxActive = 0;
+	const registryUrl = await createRegistry(t, (request, response) => {
+		active++;
+		maxActive = Math.max(maxActive, active);
+		setTimeout(() => {
+			active--;
+			response.statusCode = 404;
+			response.end();
+		}, 25);
+	});
+
+	const names = Array.from({length: 24}, (_, index) => `zz-limit-probe-${index}`);
+	const result = await npmNameMany(names, {registryUrl});
+	t.true([...result.values()].every(Boolean));
+	t.true(maxActive <= 8, `max concurrent requests was ${maxActive}`);
 });
 
 test('returns false when organization name is taken', async t => {
